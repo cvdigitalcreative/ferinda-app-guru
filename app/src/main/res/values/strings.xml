@@ -6,4 +6,8 @@
     <string name="password">Password</string>
     <string name="login_illustration">Login Illustration</string>
     <string name="kelas_yang_ada">Kelas yang ada</string>
+    <string name="tugas_yang_sudah_dibuat">Tugas yang sudah dibuat</string>
+    <string name="murid">Murid</string>
+    <string name="tugas">Tugas</string>
+    <string name="raport">Raport</string>
 </resources>
