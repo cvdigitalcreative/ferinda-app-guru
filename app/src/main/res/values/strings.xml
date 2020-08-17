@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">App Guru</string>
+    <string name="masuk">Masuk</string>
+    <string name="masuk_description">Silakan masukan data akun anda untuk melanjutkan</string>
+    <string name="nip_email">NIP / Email</string>
+    <string name="password">Password</string>
+    <string name="login_illustration">Login Illustration</string>
 </resources>
