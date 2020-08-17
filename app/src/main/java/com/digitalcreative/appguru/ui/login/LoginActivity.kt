@@ -1,7 +1,8 @@
-package com.digitalcreative.appguru
+package com.digitalcreative.appguru.ui.login
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.digitalcreative.appguru.R
 
 class LoginActivity : AppCompatActivity() {
 
