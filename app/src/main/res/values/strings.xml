@@ -10,4 +10,15 @@
     <string name="murid">Murid</string>
     <string name="tugas">Tugas</string>
     <string name="raport">Raport</string>
+    <string name="murid_description">Tambahkan murid pada kelas untuk mulai mengajar</string>
+    <string name="nomor_induk_siswa">Nomor Induk Siswa</string>
+    <string name="email">Email</string>
+    <string name="nama_siswa">Nama Siswa</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="agama">Agama</string>
+    <string name="tempat_lahir">Tempat Lahir</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <string name="telepon">Telepon</string>
+    <string name="alamat">Alamat</string>
+    <string name="daftar">Daftar</string>
 </resources>
