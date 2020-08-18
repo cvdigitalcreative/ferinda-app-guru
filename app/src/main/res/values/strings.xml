@@ -24,4 +24,8 @@
     <string name="selesai">Selesai</string>
     <string name="semester_1">Semester 1</string>
     <string name="semester_2">Semester 2</string>
+    <string name="bm">BM</string>
+    <string name="mm">MM</string>
+    <string name="bsh">BSH</string>
+    <string name="bsb">BSB</string>
 </resources>
