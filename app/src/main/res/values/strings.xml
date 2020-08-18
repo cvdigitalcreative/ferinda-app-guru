@@ -21,4 +21,7 @@
     <string name="telepon">Telepon</string>
     <string name="alamat">Alamat</string>
     <string name="daftar">Daftar</string>
+    <string name="selesai">Selesai</string>
+    <string name="semester_1">Semester 1</string>
+    <string name="semester_2">Semester 2</string>
 </resources>

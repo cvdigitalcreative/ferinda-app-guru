@@ -11,13 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.home.tugas.murid.TambahMuridActivity">
+        <activity android:name=".ui.home.tugas.raport.detail.DetailRaportActivity"></activity>
+        <activity android:name=".ui.home.tugas.raport.RaportActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.home.tugas.murid.TambahMuridActivity" />
         <activity android:name=".ui.home.tugas.TugasActivity" />
         <activity android:name=".ui.home.HomeActivity" />
         <activity android:name=".ui.login.LoginActivity">
