@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_value_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Menyanyikan lagu-lagu keagamaan yang sederhana" />
+
+    <RadioGroup
+        android:id="@+id/rg_choice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_value_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_value_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_value_name">
+
+        <RadioButton
+            android:id="@+id/rb_bm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:background="@drawable/radio_button_left_selector"
+            android:button="@android:color/transparent"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/bm"
+            android:textColor="@drawable/radio_button_text_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_mm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:background="@drawable/radio_button_center_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/mm"
+            android:textColor="@drawable/radio_button_text_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_bsh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:background="@drawable/radio_button_center_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/bsh"
+            android:textColor="@drawable/radio_button_text_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_bsb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:background="@drawable/radio_button_right_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/bsb"
+            android:textColor="@drawable/radio_button_text_selector" />
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
