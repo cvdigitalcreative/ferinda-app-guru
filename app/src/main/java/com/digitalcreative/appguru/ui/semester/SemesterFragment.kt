@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.ui.report.semester
+package com.digitalcreative.appguru.ui.semester
 
 import android.os.Bundle
 import android.view.LayoutInflater
