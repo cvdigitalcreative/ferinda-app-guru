@@ -5,29 +5,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.data.Raport
-import kotlinx.android.synthetic.main.item_raport.view.*
+import com.digitalcreative.appguru.data.Question
+import kotlinx.android.synthetic.main.item_report_value.view.*
 
-class RaportAdapter : RecyclerView.Adapter<RaportAdapter.ViewHolder>() {
-    var raports = listOf<Raport>()
+class ReportValueAdapter : RecyclerView.Adapter<ReportValueAdapter.ViewHolder>() {
+    var questions = listOf<Question>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_raport, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_report_value, parent, false)
         )
     }
 
-    override fun getItemCount(): Int = raports.size
+    override fun getItemCount(): Int = questions.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val raport = raports[position]
-        holder.bind(raport)
+        val question = questions[position]
+        holder.bind(question)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(raport: Raport) {
+        fun bind(question: Question) {
             with(itemView) {
-                tv_raport_item.text = raport.name
+                tv_value_name.text = question.name
             }
         }
     }

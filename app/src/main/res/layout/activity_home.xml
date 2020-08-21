@@ -36,7 +36,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             app:spanCount="2"
             tools:itemCount="5"
-            tools:listitem="@layout/item_kelas" />
+            tools:listitem="@layout/item_class" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_class"

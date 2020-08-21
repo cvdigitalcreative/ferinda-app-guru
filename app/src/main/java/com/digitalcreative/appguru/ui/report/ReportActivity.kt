@@ -1,16 +1,16 @@
-package com.digitalcreative.appguru.ui.raport
+package com.digitalcreative.appguru.ui.report
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.digitalcreative.appguru.R
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_raport.*
+import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class RaportActivity : AppCompatActivity() {
+class ReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_raport)
+        setContentView(R.layout.activity_report)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {

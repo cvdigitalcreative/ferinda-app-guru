@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.raport.detail.DetailRaportActivity">
+        tools:context=".ui.report.detail.DetailReportActivity">
 
         <TextView
             android:id="@+id/tv_raport_item"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_raport_item"
             tools:itemCount="3"
-            tools:listitem="@layout/item_raport_value" />
+            tools:listitem="@layout/item_report_value" />
 
         <Button
             android:id="@+id/btn_add"

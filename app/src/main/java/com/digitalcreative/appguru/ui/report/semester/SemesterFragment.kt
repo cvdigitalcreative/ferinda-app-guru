@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.ui.raport.semester
+package com.digitalcreative.appguru.ui.report.semester
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.adapter.RaportAdapter
-import com.digitalcreative.appguru.data.Raport
+import com.digitalcreative.appguru.adapter.ReportAdapter
+import com.digitalcreative.appguru.data.Report
 import kotlinx.android.synthetic.main.fragment_semester.*
 
 
@@ -31,13 +31,13 @@ class SemesterFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val listRaport = listOf(
-            Raport(1, "Section 1"),
-            Raport(2, "Section 2"),
-            Raport(3, "Section 3"),
-            Raport(4, "Section 4"),
-            Raport(5, "Section 5")
+            Report(1, "Section 1"),
+            Report(2, "Section 2"),
+            Report(3, "Section 3"),
+            Report(4, "Section 4"),
+            Report(5, "Section 5")
         )
-        val raportAdapter = RaportAdapter()
+        val raportAdapter = ReportAdapter()
         raportAdapter.raports = listRaport
 
         rv_raport.apply {

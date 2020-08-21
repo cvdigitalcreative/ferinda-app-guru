@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.ui.murid
+package com.digitalcreative.appguru.ui.student
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -12,18 +12,18 @@ import com.digitalcreative.appguru.data.Gender
 import com.digitalcreative.appguru.data.Religion
 import com.digitalcreative.appguru.utils.Constants.TYPE_DROPDOWN_GENDER
 import com.digitalcreative.appguru.utils.Constants.TYPE_DROPDOWN_RELIGION
-import kotlinx.android.synthetic.main.activity_tambah_murid.*
+import kotlinx.android.synthetic.main.activity_add_student.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TambahMuridActivity : AppCompatActivity() {
+class AddStudentActivity : AppCompatActivity() {
 
     private lateinit var datePicker: DatePickerDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tambah_murid)
+        setContentView(R.layout.activity_add_student)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {

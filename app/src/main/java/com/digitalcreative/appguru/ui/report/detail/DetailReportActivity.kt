@@ -1,17 +1,17 @@
-package com.digitalcreative.appguru.ui.raport.detail
+package com.digitalcreative.appguru.ui.report.detail
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.adapter.RaportValueAdapter
+import com.digitalcreative.appguru.adapter.ReportValueAdapter
 import com.digitalcreative.appguru.data.Question
-import kotlinx.android.synthetic.main.activity_detail_raport.*
+import kotlinx.android.synthetic.main.activity_detail_report.*
 
-class DetailRaportActivity : AppCompatActivity() {
+class DetailReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_raport)
+        setContentView(R.layout.activity_detail_report)
 
         val listQuestion = listOf(
             Question("A"),
@@ -20,12 +20,12 @@ class DetailRaportActivity : AppCompatActivity() {
             Question("D")
         )
 
-        val raportAdapter = RaportValueAdapter()
+        val raportAdapter = ReportValueAdapter()
         raportAdapter.questions = listQuestion
 
         rv_raport_value.apply {
             adapter = raportAdapter
-            layoutManager = LinearLayoutManager(this@DetailRaportActivity)
+            layoutManager = LinearLayoutManager(this@DetailReportActivity)
             setHasFixedSize(true)
         }
     }

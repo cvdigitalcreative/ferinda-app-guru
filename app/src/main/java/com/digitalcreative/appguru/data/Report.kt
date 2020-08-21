@@ -1,6 +1,6 @@
 package com.digitalcreative.appguru.data
 
-data class Raport(
+data class Report(
     val id: Int,
     val name: String
 )
