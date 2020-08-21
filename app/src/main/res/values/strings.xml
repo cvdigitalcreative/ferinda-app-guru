@@ -31,4 +31,6 @@
     <string name="tambah">Tambah</string>
     <string name="bagian_yang_sudah_dibuat">Bagian yang sudah dibuat</string>
     <string name="soal_yang_sudah_dibuat">Soal yang sudah dibuat</string>
+    <string name="bagian">Bagian</string>
+    <string name="bagian_description">Tambahkan bagian-bagian dari tugas agar lebih terstruktur</string>
 </resources>
