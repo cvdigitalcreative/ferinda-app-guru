@@ -13,7 +13,7 @@
         tools:ignore="AllowBackup">
         <activity android:name=".ui.assignment.section.AddSectionActivity" />
         <activity android:name=".ui.assignment.section.SectionActivity" />
-        <activity android:name=".ui.question.AddQuestionActivity" />
+        <activity android:name=".ui.question.QuestionActivity" />
         <activity android:name=".ui.assignment.AddAssignmentActivity" />
         <activity android:name=".ui.report.detail.DetailReportActivity">
             <intent-filter>
