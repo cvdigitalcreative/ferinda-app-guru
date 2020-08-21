@@ -7,11 +7,19 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.adapter.ReportValueAdapter
 import com.digitalcreative.appguru.data.Question
 import kotlinx.android.synthetic.main.activity_detail_report.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class DetailReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_report)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            title = "Semester 1"
+        }
 
         val listQuestion = listOf(
             Question("A"),
