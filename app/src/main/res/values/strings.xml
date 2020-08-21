@@ -36,4 +36,8 @@
     <string name="deskripsi">Deskripsi</string>
     <string name="judul">Judul</string>
     <string name="tugas_description">Tambahkan tugas untuk mengetahui kemampuan anak</string>
+    <string name="soal">Soal</string>
+    <string name="soal_description">Tambahkan soal untuk mengetahui perkembangan anak</string>
+    <string name="pilihan">Pilihan</string>
+    <string name="tambah_pilihan">Tambah Pilihan</string>
 </resources>
