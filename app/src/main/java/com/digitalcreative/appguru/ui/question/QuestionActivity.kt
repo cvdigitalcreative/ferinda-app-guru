@@ -14,7 +14,7 @@ class QuestionActivity : AppCompatActivity() {
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = "Tambah Soal"
+            title = "Perkembangan Motorik Kasar dan Lembut"
         }
     }
 }
