@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.home.tugas.raport.semester.SemesterFragment">
+        tools:context=".ui.raport.semester.SemesterFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_raport"

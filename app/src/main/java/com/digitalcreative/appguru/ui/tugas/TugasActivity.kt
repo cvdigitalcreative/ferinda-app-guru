@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.ui.home.tugas
+package com.digitalcreative.appguru.ui.tugas
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

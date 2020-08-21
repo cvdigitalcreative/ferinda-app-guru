@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.home.tugas.raport.detail.DetailRaportActivity">
+        tools:context=".ui.raport.detail.DetailRaportActivity">
 
         <TextView
             android:id="@+id/tv_raport_item"

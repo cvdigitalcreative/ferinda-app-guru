@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.ui.home.tugas.murid
+package com.digitalcreative.appguru.ui.murid
 
 import android.app.DatePickerDialog
 import android.app.Dialog
