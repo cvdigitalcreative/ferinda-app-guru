@@ -44,4 +44,5 @@
     <string name="kelas_description">Tambahkan kelas dan murid untuk memulai kegiatan belajar</string>
     <string name="nama_kelas">Nama Kelas</string>
     <string name="tambah_murid">Tambah Murid</string>
+    <string name="murid_yang_sudah_mengumpulkan_tugas">Murid yang sudah mengumpulkan tugas</string>
 </resources>
