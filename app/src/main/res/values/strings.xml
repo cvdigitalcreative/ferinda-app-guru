@@ -40,4 +40,8 @@
     <string name="soal_description">Tambahkan soal untuk mengetahui perkembangan anak</string>
     <string name="pilihan">Pilihan</string>
     <string name="tambah_pilihan">Tambah Pilihan</string>
+    <string name="kelas">Kelas</string>
+    <string name="kelas_description">Tambahkan kelas dan murid untuk memulai kegiatan belajar</string>
+    <string name="nama_kelas">Nama Kelas</string>
+    <string name="tambah_murid">Tambah Murid</string>
 </resources>
