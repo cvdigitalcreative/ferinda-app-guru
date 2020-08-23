@@ -135,7 +135,6 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("nis", formData["nis"] ?: "")
                 .addFormDataPart("email", formData["email"] ?: "")
-                .addFormDataPart("password", formData["password"] ?: "")
                 .addFormDataPart("nama", formData["name"] ?: "")
                 .addFormDataPart("jenis_kelamin", formData["gender"] ?: "")
                 .addFormDataPart("agama", formData["religion"] ?: "")

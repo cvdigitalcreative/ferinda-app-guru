@@ -142,7 +142,6 @@ class AddStudentActivity : AppCompatActivity() {
     private fun addStudent() {
         val nis = edt_nis.text.toString().trim()
         val email = edt_email.text.toString().trim()
-        val password = edt_password.text.toString().trim()
         val name = edt_name.text.toString().trim()
         val gender = genderId
         val religion = religionId
@@ -155,7 +154,6 @@ class AddStudentActivity : AppCompatActivity() {
         val formData = mapOf(
             "nis" to nis,
             "email" to email,
-            "password" to password,
             "name" to name,
             "gender" to gender,
             "religion" to religion,
