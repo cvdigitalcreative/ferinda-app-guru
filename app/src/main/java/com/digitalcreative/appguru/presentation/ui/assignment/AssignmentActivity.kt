@@ -64,6 +64,11 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
+
     override fun onItemClicked(assignment: Assignment) {
     }
 
