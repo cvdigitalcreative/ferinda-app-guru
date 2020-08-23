@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.assignment
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,9 +21,17 @@ import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
 class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener {
+
     private val viewModel by viewModels<AssignmentViewModel>()
     private val loadingDialog by loadingDialog()
     private val assignmentAdapter = AssignmentAdapter()
+    private val addAssignmentResults =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::handleResultIntent
+        )
+
+    private lateinit var classroom: Classroom
 
     companion object {
         const val EXTRA_CLASSROOM = "extra_classroom"
@@ -32,7 +42,7 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
         setContentView(R.layout.activity_assignment)
         setSupportActionBar(toolbar)
 
-        val classroom = intent.getParcelableExtra<Classroom>(EXTRA_CLASSROOM) ?: return
+        classroom = intent.getParcelableExtra(EXTRA_CLASSROOM) ?: return
 
         initObservers()
         viewModel.getAssignmentByClassroom(classroom.id)
@@ -62,10 +72,23 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
 
         fab_tugas.setOnClickListener {
             fab_menu.toggle(true)
+
+            val intent = Intent(this, AddAssignmentActivity::class.java).apply {
+                putExtra(AddAssignmentActivity.EXTRA_ID, classroom.id)
+            }
+            addAssignmentResults.launch(intent)
         }
 
         fab_raport.setOnClickListener {
             fab_menu.toggle(true)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (fab_menu.isOpened) {
+            fab_menu.toggle(true)
+        } else {
+            super.onBackPressed()
         }
     }
 
@@ -75,6 +98,12 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
     }
 
     override fun onItemClicked(assignment: Assignment) {
+    }
+
+    private fun handleResultIntent(result: ActivityResult) {
+        if (result.resultCode == AddAssignmentActivity.RESULT_SUCCESS) {
+            viewModel.getAssignmentByClassroom(classroom.id)
+        }
     }
 
     private fun initObservers() {

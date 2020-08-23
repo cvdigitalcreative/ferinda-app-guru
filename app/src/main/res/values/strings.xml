@@ -46,4 +46,5 @@
     <string name="tambah_murid">Tambah Murid</string>
     <string name="murid_yang_sudah_mengumpulkan_tugas">Murid yang sudah mengumpulkan tugas</string>
     <string name="tambah_kelas">Tambah Kelas</string>
+    <string name="tambah_tugas">Tambah Tugas</string>
 </resources>

@@ -54,4 +54,16 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @POST("guru/{teacher_id}/kelas/{class_id}/tugas/")
+    suspend fun addAssignment(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }
