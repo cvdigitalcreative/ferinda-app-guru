@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import com.digitalcreative.appguru.R
+import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.data.model.Gender
 import com.digitalcreative.appguru.data.model.Religion
+import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_CLASS
 import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_GENDER
 import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_RELIGION
 
@@ -35,6 +37,10 @@ class CustomDropdownAdapter(
                 val item = (data[position] as Religion)
                 tvDropdown.text = item.name
             }
+            TYPE_DROPDOWN_CLASS -> {
+                val item = (data[position] as Classroom)
+                tvDropdown.text = item.name
+            }
         }
         return view
     }
@@ -48,6 +54,9 @@ class CustomDropdownAdapter(
                     }
                     TYPE_DROPDOWN_RELIGION -> {
                         (resultValue as Religion).name
+                    }
+                    TYPE_DROPDOWN_CLASS -> {
+                        (resultValue as Classroom).name
                     }
                     else -> ""
                 }

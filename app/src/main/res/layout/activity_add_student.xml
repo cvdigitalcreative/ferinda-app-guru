@@ -237,6 +237,27 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout16"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout15"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout15"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout15">
+
+            <AutoCompleteTextView
+                android:id="@+id/dropdown_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
+                android:hint="@string/kelas"
+                tools:ignore="Deprecated,KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btn_register"
             android:layout_width="0dp"
@@ -245,9 +266,9 @@
             android:layout_marginBottom="24dp"
             android:text="@string/daftar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textInputLayout15"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout15"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout15"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout16"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout16"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout16"
             app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

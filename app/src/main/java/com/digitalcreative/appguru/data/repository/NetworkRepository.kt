@@ -3,9 +3,7 @@ package com.digitalcreative.appguru.data.repository
 import android.util.Log
 import com.digitalcreative.appguru.api.ApiService
 import com.digitalcreative.appguru.data.Result
-import com.digitalcreative.appguru.data.model.Assignment
-import com.digitalcreative.appguru.data.model.Classroom
-import com.digitalcreative.appguru.data.model.Teacher
+import com.digitalcreative.appguru.data.model.*
 import com.digitalcreative.appguru.utils.helper.Constants.CONNECTION_ERROR
 import com.digitalcreative.appguru.utils.helper.Constants.STATUS_SUCCESS
 import com.digitalcreative.appguru.utils.helper.Constants.UNKNOWN_ERROR
@@ -93,6 +91,40 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "GetAssignmentByClassroom -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun getAllGender(): Result<List<Gender>> {
+        return try {
+            val response = service.getAllGender()
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetAllGender -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetAllGender -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun getAllReligion(): Result<List<Religion>> {
+        return try {
+            val response = service.getAllReligion()
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetAllReligion -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetAllReligion -> ${e.localizedMessage}")
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }

@@ -1,8 +1,6 @@
 package com.digitalcreative.appguru.api
 
-import com.digitalcreative.appguru.data.model.Assignment
-import com.digitalcreative.appguru.data.model.Classroom
-import com.digitalcreative.appguru.data.model.Teacher
+import com.digitalcreative.appguru.data.model.*
 import com.digitalcreative.appguru.data.response.BaseResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -41,4 +39,10 @@ interface ApiService {
         @Path("class_id")
         classId: String
     ): BaseResponse<List<Assignment>>
+
+    @GET("guru/jenis-kelamin/")
+    suspend fun getAllGender(): BaseResponse<List<Gender>>
+
+    @GET("guru/agama/")
+    suspend fun getAllReligion(): BaseResponse<List<Religion>>
 }

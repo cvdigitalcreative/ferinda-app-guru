@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.assignment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.AssignmentAdapter
+import com.digitalcreative.appguru.presentation.ui.student.AddStudentActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -53,6 +55,9 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
 
         fab_murid.setOnClickListener {
             fab_menu.toggle(true)
+
+            val intent = Intent(this, AddStudentActivity::class.java)
+            startActivity(intent)
         }
 
         fab_tugas.setOnClickListener {

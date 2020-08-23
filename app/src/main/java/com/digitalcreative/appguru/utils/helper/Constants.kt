@@ -3,6 +3,7 @@ package com.digitalcreative.appguru.utils.helper
 object Constants {
     const val TYPE_DROPDOWN_GENDER = 1
     const val TYPE_DROPDOWN_RELIGION = 2
+    const val TYPE_DROPDOWN_CLASS = 3
 
     const val STATUS_SUCCESS = "Success"
     const val STATUS_ERROR = "Error"
