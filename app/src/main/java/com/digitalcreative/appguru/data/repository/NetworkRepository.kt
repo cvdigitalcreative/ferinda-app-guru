@@ -3,6 +3,7 @@ package com.digitalcreative.appguru.data.repository
 import android.util.Log
 import com.digitalcreative.appguru.api.ApiService
 import com.digitalcreative.appguru.data.Result
+import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.data.model.Teacher
 import com.digitalcreative.appguru.utils.helper.Constants.CONNECTION_ERROR
 import com.digitalcreative.appguru.utils.helper.Constants.STATUS_SUCCESS
@@ -33,6 +34,23 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "Login -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun getAllClassroom(teacherId: String): Result<List<Classroom>> {
+        return try {
+            val response = service.getAllClassroom(teacherId)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetAllClassroom -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetAllClassroom -> ${e.localizedMessage}")
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
