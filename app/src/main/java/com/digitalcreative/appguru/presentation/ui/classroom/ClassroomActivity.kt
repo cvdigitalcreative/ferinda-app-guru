@@ -1,7 +1,7 @@
 package com.digitalcreative.appguru.presentation.ui.classroom
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.ClassroomAdapter
+import com.digitalcreative.appguru.presentation.ui.assignment.AssignmentActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -38,8 +39,11 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
         }
     }
 
-    override fun onItemClicked(classId: String) {
-        Log.e("ItemClicked", classId)
+    override fun onItemClicked(classroom: Classroom) {
+        val intent = Intent(this, AssignmentActivity::class.java).apply {
+            putExtra(AssignmentActivity.EXTRA_CLASSROOM, classroom)
+        }
+        startActivity(intent)
     }
 
     private fun initObservers() {

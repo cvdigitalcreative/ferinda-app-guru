@@ -33,13 +33,13 @@ class ClassroomAdapter : RecyclerView.Adapter<ClassroomAdapter.ViewHolder>() {
                 tv_class_name.text = classroom.name
 
                 setOnClickListener {
-                    listener?.onItemClicked(classroom.id)
+                    listener?.onItemClicked(classroom)
                 }
             }
         }
     }
 
     interface OnClickListener {
-        fun onItemClicked(classId: String)
+        fun onItemClicked(classroom: Classroom)
     }
 }

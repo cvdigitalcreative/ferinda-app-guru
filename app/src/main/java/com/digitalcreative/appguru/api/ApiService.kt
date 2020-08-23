@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.api
 
+import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.data.model.Teacher
 import com.digitalcreative.appguru.data.response.BaseResponse
@@ -22,4 +23,13 @@ interface ApiService {
         @Path("teacher_id")
         teacherId: String
     ): BaseResponse<List<Classroom>>
+
+    @GET("guru/{teacher_id}/kelas/{class_id}/tugas/")
+    suspend fun getAssignmentByClassroom(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String
+    ): BaseResponse<List<Assignment>>
 }
