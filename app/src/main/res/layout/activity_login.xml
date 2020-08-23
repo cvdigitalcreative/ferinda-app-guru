@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".presentation.ui.login.LoginActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_nis_email"
+            android:id="@+id/edt_nip_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nip_email"
