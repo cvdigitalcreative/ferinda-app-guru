@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.classroom
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -21,6 +23,11 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
     private val viewModel by viewModels<ClassroomViewModel>()
     private val loadingDialog by loadingDialog()
     private val classroomAdapter = ClassroomAdapter()
+    private val addClassroomResults =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::handleResultIntent
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +44,11 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
                 GridLayoutManager(this@ClassroomActivity, 2, GridLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
         }
+
+        fab_class.setOnClickListener {
+            val intent = Intent(this, AddClassroomActivity::class.java)
+            addClassroomResults.launch(intent)
+        }
     }
 
     override fun onItemClicked(classroom: Classroom) {
@@ -44,6 +56,12 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
             putExtra(AssignmentActivity.EXTRA_CLASSROOM, classroom)
         }
         startActivity(intent)
+    }
+
+    private fun handleResultIntent(result: ActivityResult) {
+        if (result.resultCode == AddClassroomActivity.RESULT_SUCCESS) {
+            viewModel.getAllClassroom()
+        }
     }
 
     private fun initObservers() {

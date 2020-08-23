@@ -24,6 +24,15 @@ interface ApiService {
         teacherId: String
     ): BaseResponse<List<Classroom>>
 
+    @POST("guru/{teacher_id}/kelas/")
+    suspend fun addClassroom(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
+
     @GET("guru/{teacher_id}/kelas/{class_id}/tugas/")
     suspend fun getAssignmentByClassroom(
         @Path("teacher_id")

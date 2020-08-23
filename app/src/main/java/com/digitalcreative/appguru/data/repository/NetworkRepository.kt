@@ -56,6 +56,27 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
         }
     }
 
+    suspend fun addClassroom(teacherId: String, className: String): Result<String> {
+        return try {
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nama_kelas", className)
+                .build()
+            val response = service.addClassroom(teacherId, body)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.message)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "AddClassroom -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "AddClassroom -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
     suspend fun getAssignmentByClassroom(
         teacherId: String,
         classId: String
