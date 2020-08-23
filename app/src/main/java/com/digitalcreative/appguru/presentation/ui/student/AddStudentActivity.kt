@@ -25,10 +25,11 @@ class AddStudentActivity : AppCompatActivity() {
     private val viewModel by viewModels<StudentViewModel>()
     private val loadingDialog by loadingDialog()
 
+    private var genderId: String = ""
+    private var religionId: String = ""
+    private var classId: String = ""
+
     private lateinit var datePicker: DatePickerDialog
-    private lateinit var genderId: String
-    private lateinit var religionId: String
-    private lateinit var classId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class AddStudentActivity : AppCompatActivity() {
             title = getString(R.string.tambah_murid)
         }
 
-        edt_birthdate.setOnClickListener {
+        edt_birth_date.setOnClickListener {
             if (!datePicker.isAdded) {
                 datePicker.show(supportFragmentManager, null)
             }
@@ -60,10 +61,19 @@ class AddStudentActivity : AppCompatActivity() {
         }
 
         datePicker = DatePickerDialog {
-            edt_birthdate.setText(it)
+            edt_birth_date.setText(it)
+        }
+
+        btn_register.setOnClickListener {
+            addStudent()
         }
 
         initObservers()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
     private fun initObservers() {
@@ -122,9 +132,39 @@ class AddStudentActivity : AppCompatActivity() {
 
     private fun showSuccessMessage(message: String) {
         Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
+        finish()
     }
 
     private fun showErrorMessage(message: String) {
         Toasty.error(this, message, Toasty.LENGTH_LONG, true).show()
+    }
+
+    private fun addStudent() {
+        val nis = edt_nis.text.toString().trim()
+        val email = edt_email.text.toString().trim()
+        val password = edt_password.text.toString().trim()
+        val name = edt_name.text.toString().trim()
+        val gender = genderId
+        val religion = religionId
+        val birthPlace = edt_birth_place.text.toString().trim()
+        val birthDate = edt_birth_date.text.toString().trim()
+        val phone = edt_phone.text.toString().trim()
+        val address = edt_address.text.toString().trim()
+        val classroom = classId
+
+        val formData = mapOf(
+            "nis" to nis,
+            "email" to email,
+            "password" to password,
+            "name" to name,
+            "gender" to gender,
+            "religion" to religion,
+            "birthPlace" to birthPlace,
+            "birthDate" to birthDate,
+            "phone" to phone,
+            "address" to address,
+            "classroom" to classroom
+        )
+        viewModel.addStudent(formData)
     }
 }

@@ -128,4 +128,35 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
+
+    suspend fun addStudent(teacherId: String, formData: Map<String, String>): Result<String> {
+        return try {
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nis", formData["nis"] ?: "")
+                .addFormDataPart("email", formData["email"] ?: "")
+                .addFormDataPart("password", formData["password"] ?: "")
+                .addFormDataPart("nama", formData["name"] ?: "")
+                .addFormDataPart("jenis_kelamin", formData["gender"] ?: "")
+                .addFormDataPart("agama", formData["religion"] ?: "")
+                .addFormDataPart("tempat_lahir", formData["birthPlace"] ?: "")
+                .addFormDataPart("tanggal_lahir", formData["birthDate"] ?: "")
+                .addFormDataPart("telepon", formData["phone"] ?: "")
+                .addFormDataPart("alamat", formData["address"] ?: "")
+                .addFormDataPart("id_kelas", formData["classroom"] ?: "")
+                .build()
+            val response = service.addStudent(teacherId, body)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.message)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "AddStudent -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "AddStudent -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
 }

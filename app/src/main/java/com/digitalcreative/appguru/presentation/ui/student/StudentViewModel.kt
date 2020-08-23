@@ -11,6 +11,8 @@ import com.digitalcreative.appguru.data.model.Religion
 import com.digitalcreative.appguru.domain.usecase.classroom.GetAllClassroom
 import com.digitalcreative.appguru.domain.usecase.common.GetAllGender
 import com.digitalcreative.appguru.domain.usecase.common.GetAllReligion
+import com.digitalcreative.appguru.domain.usecase.student.AddStudent
+import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +23,7 @@ class StudentViewModel @ViewModelInject constructor(
     private val getGenderUseCase: GetAllGender,
     private val getReligionUseCase: GetAllReligion,
     private val getClassroomUseCase: GetAllClassroom,
+    private val addStudentUseCase: AddStudent,
     private val preferences: UserPreferences
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
@@ -45,6 +48,34 @@ class StudentViewModel @ViewModelInject constructor(
         getAllGender()
         getAllReligion()
         getAllClassroom()
+    }
+
+    fun addStudent(formData: Map<String, String>) {
+        if (!isFormValid(formData)) {
+            mErrorMessage.postValue(Constants.EMPTY_INPUT_ERROR)
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response = addStudentUseCase(teacherId, formData)) {
+                is Result.Success -> {
+                    mSuccessMessage.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    private fun isFormValid(formData: Map<String, String>): Boolean {
+        return formData.entries.none { it.value.isBlank() }
     }
 
     private fun getAllGender() {

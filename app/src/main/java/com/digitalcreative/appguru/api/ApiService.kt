@@ -45,4 +45,13 @@ interface ApiService {
 
     @GET("guru/agama/")
     suspend fun getAllReligion(): BaseResponse<List<Religion>>
+
+    @POST("guru/{teacher_id}/murid/")
+    suspend fun addStudent(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }
