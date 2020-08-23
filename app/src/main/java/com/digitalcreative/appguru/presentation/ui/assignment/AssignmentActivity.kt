@@ -12,6 +12,7 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.AssignmentAdapter
+import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionActivity
 import com.digitalcreative.appguru.presentation.ui.student.AddStudentActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,6 +99,11 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
     }
 
     override fun onItemClicked(assignment: Assignment) {
+        val intent = Intent(this, SectionActivity::class.java).apply {
+            putExtra(SectionActivity.EXTRA_CLASS_ID, classroom.id)
+            putExtra(SectionActivity.EXTRA_ASSIGNMENT, assignment)
+        }
+        startActivity(intent)
     }
 
     private fun handleResultIntent(result: ActivityResult) {
