@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.assignment.section
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,6 +27,12 @@ class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
 
     private lateinit var classId: String
     private lateinit var assignment: Assignment
+
+    private val addSectionResults =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::handleResultIntent
+        )
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
@@ -53,6 +61,14 @@ class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
             setHasFixedSize(true)
         }
 
+        fab_assignment_section.setOnClickListener {
+            val intent = Intent(this, AddSectionActivity::class.java).apply {
+                putExtra(AddSectionActivity.EXTRA_CLASS_ID, classId)
+                putExtra(AddSectionActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
+            }
+            addSectionResults.launch(intent)
+        }
+
         initObservers()
         viewModel.getAssignmentSection(classId, assignment.id)
     }
@@ -71,9 +87,16 @@ class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
         startActivity(intent)
     }
 
+    private fun handleResultIntent(result: ActivityResult) {
+        if (result.resultCode == AddSectionActivity.RESULT_SUCCESS) {
+            viewModel.getAssignmentSection(classId, assignment.id)
+        }
+    }
+
     private fun initObservers() {
         viewModel.loading.observe(this, Observer(this::showLoading))
         viewModel.section.observe(this, Observer(this::showSection))
+        viewModel.successMessage.observe(this, Observer(this::showSuccessMessage))
         viewModel.errorMessage.observe(this, Observer(this::showErrorMessage))
     }
 
@@ -94,6 +117,10 @@ class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
             this.sections = sections
             notifyDataSetChanged()
         }
+    }
+
+    private fun showSuccessMessage(message: String) {
+        Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
     }
 
     private fun showErrorMessage(message: String) {

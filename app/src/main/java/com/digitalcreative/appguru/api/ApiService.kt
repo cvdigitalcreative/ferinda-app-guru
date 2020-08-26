@@ -93,4 +93,19 @@ interface ApiService {
         @Path("section_id")
         sectionId: String
     ): BaseResponse<List<Assignment.Section.Question>>
+
+    @POST("guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/")
+    suspend fun addAssignmentSection(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("assignment_id")
+        assignmentId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }
