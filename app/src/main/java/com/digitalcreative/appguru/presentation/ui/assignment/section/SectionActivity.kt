@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.assignment.section
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.presentation.adapter.SectionAdapter
+import com.digitalcreative.appguru.presentation.ui.question.QuestionActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -15,11 +17,14 @@ import kotlinx.android.synthetic.main.activity_section.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
-class SectionActivity : AppCompatActivity() {
+class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
 
     private val viewModel by viewModels<SectionViewModel>()
     private val loadingDialog by loadingDialog()
     private val sectionAdapter = SectionAdapter()
+
+    private lateinit var classId: String
+    private lateinit var assignment: Assignment
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
@@ -31,14 +36,16 @@ class SectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_section)
         setSupportActionBar(toolbar)
 
-        val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
-        val assignment = intent.getParcelableExtra<Assignment>(EXTRA_ASSIGNMENT) ?: return
+        classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
+        assignment = intent.getParcelableExtra(EXTRA_ASSIGNMENT) ?: return
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
             title = assignment.title
         }
+
+        sectionAdapter.listener = this
 
         rv_assignment_section.apply {
             adapter = sectionAdapter
@@ -48,6 +55,15 @@ class SectionActivity : AppCompatActivity() {
 
         initObservers()
         viewModel.getAssignmentSection(classId, assignment.id)
+    }
+
+    override fun onItemClicked(section: Assignment.Section) {
+        val intent = Intent(this, QuestionActivity::class.java).apply {
+            putExtra(QuestionActivity.EXTRA_CLASS_ID, classId)
+            putExtra(QuestionActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
+            putExtra(QuestionActivity.EXTRA_SECTION, section)
+        }
+        startActivity(intent)
     }
 
     private fun initObservers() {

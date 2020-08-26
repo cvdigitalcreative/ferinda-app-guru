@@ -78,4 +78,19 @@ interface ApiService {
         @Path("assignment_id")
         assignmentId: String
     ): BaseResponse<List<Assignment.Section>>
+
+    @GET("guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/{section_id}/soal/")
+    suspend fun getAssignmentQuestion(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("assignment_id")
+        assignmentId: String,
+
+        @Path("section_id")
+        sectionId: String
+    ): BaseResponse<List<Assignment.Section.Question>>
 }

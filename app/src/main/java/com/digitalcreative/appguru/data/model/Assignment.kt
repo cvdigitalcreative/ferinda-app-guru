@@ -22,9 +22,6 @@ data class Assignment(
 
         @SerializedName("grup_soal")
         val section: String,
-
-        @SerializedName("soal")
-        val questions: List<Question>
     ) : Parcelable {
         @Parcelize
         data class Question(
@@ -34,7 +31,7 @@ data class Assignment(
             @SerializedName("soal")
             val question: String,
 
-            @SerializedName("pilihan_jawab")
+            @SerializedName("pilihan")
             val choices: List<Choice>
         ) : Parcelable {
             @Parcelize
