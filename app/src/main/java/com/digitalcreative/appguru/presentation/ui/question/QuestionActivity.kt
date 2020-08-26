@@ -52,6 +52,11 @@ class QuestionActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
+
     private fun initObservers() {
         viewModel.loading.observe(this, Observer(this::showLoading))
         viewModel.question.observe(this, Observer(this::showSection))

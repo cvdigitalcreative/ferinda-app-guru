@@ -57,6 +57,11 @@ class SectionActivity : AppCompatActivity(), SectionAdapter.OnClickListener {
         viewModel.getAssignmentSection(classId, assignment.id)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
+
     override fun onItemClicked(section: Assignment.Section) {
         val intent = Intent(this, QuestionActivity::class.java).apply {
             putExtra(QuestionActivity.EXTRA_CLASS_ID, classId)
