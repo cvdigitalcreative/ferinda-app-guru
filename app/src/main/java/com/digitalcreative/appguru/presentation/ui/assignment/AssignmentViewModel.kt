@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Assignment
-import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.domain.usecase.assignment.AddAssignment
 import com.digitalcreative.appguru.domain.usecase.assignment.GetAssignmentByClassroom
-import com.digitalcreative.appguru.domain.usecase.assignment.GetAssignmentSubmitted
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -20,7 +18,6 @@ import kotlinx.coroutines.launch
 class AssignmentViewModel @ViewModelInject constructor(
     private val getAssignmentUseCase: GetAssignmentByClassroom,
     private val addAssignmentUseCase: AddAssignment,
-    private val getSubmittedUseCase: GetAssignmentSubmitted,
     private val preferences: UserPreferences
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
@@ -28,9 +25,6 @@ class AssignmentViewModel @ViewModelInject constructor(
 
     private val mAssignment = MutableLiveData<List<Assignment>>()
     val assignment = mAssignment
-
-    private val mAssignmentSubmitted = MutableLiveData<List<Student>>()
-    val assignmentSubmitted = mAssignmentSubmitted
 
     private val mSuccessMessage = MutableLiveData<String>()
     val successMessage = mSuccessMessage
@@ -70,25 +64,6 @@ class AssignmentViewModel @ViewModelInject constructor(
             when (val response = addAssignmentUseCase(teacherId, classId, title, description)) {
                 is Result.Success -> {
                     mSuccessMessage.postValue((response.data))
-                    mLoading.postValue(false)
-                }
-
-                is Result.ErrorRequest -> {
-                    mErrorMessage.postValue(response.message)
-                    mLoading.postValue(false)
-                }
-            }
-        }
-    }
-
-    fun getAssignmentSubmitted(classId: String, assignmentId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mLoading.postValue(true)
-
-            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
-            when (val response = getSubmittedUseCase(teacherId, classId, assignmentId)) {
-                is Result.Success -> {
-                    mAssignmentSubmitted.postValue((response.data))
                     mLoading.postValue(false)
                 }
 

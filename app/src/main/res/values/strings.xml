@@ -53,8 +53,7 @@
     <string name="nilai">Nilai</string>
     <string name="ya">Ya</string>
     <string name="tidak">Tidak</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="list_tugas">List Tugas</string>
+    <string name="list_bagian">List Bagian</string>
     <string name="tugas_dikumpul">Tugas Dikumpul</string>
+    <string name="ui_avatar">https://ui-avatars.com/api/?name=%1$s&amp;size=128&amp;rounded=true&amp;background=4A5DFF&amp;color=FFFFFF&amp;format=png</string>
 </resources>

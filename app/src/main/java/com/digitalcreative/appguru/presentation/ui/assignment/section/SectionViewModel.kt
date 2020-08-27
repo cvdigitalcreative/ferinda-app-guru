@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Assignment
+import com.digitalcreative.appguru.data.model.Student
+import com.digitalcreative.appguru.domain.usecase.assignment.GetAssignmentSubmitted
 import com.digitalcreative.appguru.domain.usecase.section.AddAssignmentSection
 import com.digitalcreative.appguru.domain.usecase.section.GetAssignmentSection
 import com.digitalcreative.appguru.utils.helper.Constants
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 class SectionViewModel @ViewModelInject constructor(
     private val getSectionUseCase: GetAssignmentSection,
     private val addSectionUseCase: AddAssignmentSection,
+    private val getSubmittedUseCase: GetAssignmentSubmitted,
     private val preferences: UserPreferences
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
@@ -25,6 +28,9 @@ class SectionViewModel @ViewModelInject constructor(
 
     private val mSection = MutableLiveData<List<Assignment.Section>>()
     val section = mSection
+
+    private val mAssignmentSubmitted = MutableLiveData<List<Student>>()
+    val assignmentSubmitted = mAssignmentSubmitted
 
     private val mSuccessMessage = MutableLiveData<String>()
     val successMessage = mSuccessMessage
@@ -64,6 +70,29 @@ class SectionViewModel @ViewModelInject constructor(
             when (val response = addSectionUseCase(teacherId, classId, assignmentId, section)) {
                 is Result.Success -> {
                     mSuccessMessage.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun getAssignmentSubmitted(classId: String, assignmentId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response = getSubmittedUseCase(teacherId, classId, assignmentId)) {
+                is Result.Success -> {
+                    val parsedData = response.data.map { item ->
+                        item.copy(name = item.name.replace(" ", "+"))
+                    }
+
+                    mAssignmentSubmitted.postValue(parsedData)
                     mLoading.postValue(false)
                 }
 
