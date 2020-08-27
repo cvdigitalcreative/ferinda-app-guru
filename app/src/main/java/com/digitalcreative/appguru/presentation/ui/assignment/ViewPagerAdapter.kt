@@ -18,7 +18,7 @@ class ViewPagerAdapter(fragment: FragmentActivity, private val bundle: Bundle) :
                 }
             }
             1 -> {
-                AssignmentFragment().apply {
+                SubmittedAssignmentFragment().apply {
                     arguments = bundle
                 }
             }

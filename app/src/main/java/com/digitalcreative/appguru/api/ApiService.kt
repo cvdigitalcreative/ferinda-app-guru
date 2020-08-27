@@ -135,4 +135,16 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @GET("/guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/selesai/")
+    suspend fun getAssignmentSubmitted(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("assignment_id")
+        assignmentId: String
+    ): BaseResponse<List<Student>>
 }
