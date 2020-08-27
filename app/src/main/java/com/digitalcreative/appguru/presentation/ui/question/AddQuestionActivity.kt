@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
+import com.digitalcreative.appguru.data.model.Answer
 import com.digitalcreative.appguru.data.model.GroupAnswer
+import com.digitalcreative.appguru.presentation.adapter.AnswerAdapter
 import com.digitalcreative.appguru.presentation.adapter.GroupAnswerAdapter
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import com.google.android.material.chip.Chip
@@ -22,8 +24,9 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
     private val viewModel by viewModels<QuestionViewModel>()
     private val loadingDialog by loadingDialog()
     private val groupAnswerAdapter = GroupAnswerAdapter()
+    private val answerAdapter = AnswerAdapter()
 
-    private lateinit var manager: LinearLayoutManager
+    private lateinit var groupAnswerManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +40,18 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
         }
 
         groupAnswerAdapter.listener = this
-        manager =
+        groupAnswerManager =
             LinearLayoutManager(this@AddQuestionActivity, LinearLayoutManager.HORIZONTAL, false)
 
         rv_group_answer.apply {
             adapter = groupAnswerAdapter
-            layoutManager = manager
+            layoutManager = groupAnswerManager
+            setHasFixedSize(true)
+        }
+
+        rv_answer_value.apply {
+            adapter = answerAdapter
+            layoutManager = LinearLayoutManager(this@AddQuestionActivity)
             setHasFixedSize(true)
         }
 
@@ -57,10 +66,11 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
 
     override fun onItemClicked(id: String, position: Int?) {
         position?.let { uncheckChip(position) }
+        viewModel.getAssignmentQuestionChoiceDetail(id)
     }
 
     private fun uncheckChip(position: Int) {
-        val chipGroup = manager.findViewByPosition(position) as ChipGroup
+        val chipGroup = groupAnswerManager.findViewByPosition(position) as ChipGroup
         val chip = chipGroup.getChildAt(0) as Chip
         chip.isChecked = false
     }
@@ -68,6 +78,7 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
     private fun initObservers() {
         viewModel.loading.observe(this, Observer(this::showLoading))
         viewModel.choice.observe(this, Observer(this::showChoices))
+        viewModel.answer.observe(this, Observer(this::showAnswer))
         viewModel.errorMessage.observe(this, Observer(this::showErrorMessage))
     }
 
@@ -86,6 +97,13 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
     private fun showChoices(choices: List<GroupAnswer>) {
         groupAnswerAdapter.apply {
             groupAnswers = choices
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun showAnswer(answers: List<Answer>) {
+        answerAdapter.apply {
+            this.answers = answers
             notifyDataSetChanged()
         }
     }

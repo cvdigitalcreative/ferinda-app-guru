@@ -258,8 +258,7 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
 
     suspend fun getGroupChoiceType(): Result<List<GroupAnswer>> {
         return try {
-            val response =
-                service.getGroupChoiceType()
+            val response = service.getGroupChoiceType()
             if (response.status == STATUS_SUCCESS) {
                 Result.Success(response.data)
             } else {
@@ -270,6 +269,23 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "GetGroupChoiceType -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun getGroupChoiceDetail(groupChoiceId: String): Result<List<Answer>> {
+        return try {
+            val response = service.getGroupChoiceDetail(groupChoiceId)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetGroupChoiceDetail -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetGroupChoiceDetail -> ${e.localizedMessage}")
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }

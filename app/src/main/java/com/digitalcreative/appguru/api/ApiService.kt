@@ -111,4 +111,10 @@ interface ApiService {
 
     @GET("guru/grup-pilihan-soal/")
     suspend fun getGroupChoiceType(): BaseResponse<List<GroupAnswer>>
+
+    @GET("guru/grup-pilihan-soal/{group_answer_id}/pilihan-soal/")
+    suspend fun getGroupChoiceDetail(
+        @Path("group_answer_id")
+        groupAnswerId: String
+    ): BaseResponse<List<Answer>>
 }
