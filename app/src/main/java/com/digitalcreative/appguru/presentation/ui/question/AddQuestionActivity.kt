@@ -4,34 +4,34 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.data.model.Answer
-import com.digitalcreative.appguru.data.model.GroupAnswer
-import com.digitalcreative.appguru.presentation.adapter.AnswerAdapter
-import com.digitalcreative.appguru.presentation.adapter.GroupAnswerAdapter
 import com.digitalcreative.appguru.utils.helper.loadingDialog
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_add_question.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
-class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListener {
+class AddQuestionActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<QuestionViewModel>()
     private val loadingDialog by loadingDialog()
-    private val groupAnswerAdapter = GroupAnswerAdapter()
-    private val answerAdapter = AnswerAdapter()
 
-    private lateinit var groupAnswerManager: LinearLayoutManager
+    companion object {
+        const val EXTRA_CLASS_ID = "extra_class_id"
+        const val EXTRA_ASSIGNMENT_ID = "extra_assignment_id"
+        const val EXTRA_SECTION_ID = "extra_section_id"
+        const val RESULT_SUCCESS = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_question)
         setSupportActionBar(toolbar)
+
+        val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
+        val assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
+        val sectionId = intent.getStringExtra(EXTRA_SECTION_ID) ?: return
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -39,24 +39,16 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
             title = getString(R.string.tambah_soal)
         }
 
-        groupAnswerAdapter.listener = this
-        groupAnswerManager =
-            LinearLayoutManager(this@AddQuestionActivity, LinearLayoutManager.HORIZONTAL, false)
-
-        rv_group_answer.apply {
-            adapter = groupAnswerAdapter
-            layoutManager = groupAnswerManager
-            setHasFixedSize(true)
-        }
-
-        rv_answer_value.apply {
-            adapter = answerAdapter
-            layoutManager = LinearLayoutManager(this@AddQuestionActivity)
-            setHasFixedSize(true)
+        btn_add_question.setOnClickListener {
+            val question = edt_question.text.toString().trim()
+            val choicesValue = listOf(
+                edt_yes.text.toString().trim(),
+                edt_no.text.toString().trim()
+            )
+            viewModel.addQuestion(classId, assignmentId, sectionId, question, choicesValue)
         }
 
         initObservers()
-        viewModel.getAssignmentQuestionChoice()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -64,21 +56,9 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
         return super.onSupportNavigateUp()
     }
 
-    override fun onItemClicked(id: String, position: Int?) {
-        position?.let { uncheckChip(position) }
-        viewModel.getAssignmentQuestionChoiceDetail(id)
-    }
-
-    private fun uncheckChip(position: Int) {
-        val chipGroup = groupAnswerManager.findViewByPosition(position) as ChipGroup
-        val chip = chipGroup.getChildAt(0) as Chip
-        chip.isChecked = false
-    }
-
     private fun initObservers() {
         viewModel.loading.observe(this, Observer(this::showLoading))
-        viewModel.choice.observe(this, Observer(this::showChoices))
-        viewModel.answer.observe(this, Observer(this::showAnswer))
+        viewModel.successMessage.observe(this, Observer(this::showSuccessMessage))
         viewModel.errorMessage.observe(this, Observer(this::showErrorMessage))
     }
 
@@ -94,18 +74,10 @@ class AddQuestionActivity : AppCompatActivity(), GroupAnswerAdapter.OnClickListe
         }
     }
 
-    private fun showChoices(choices: List<GroupAnswer>) {
-        groupAnswerAdapter.apply {
-            groupAnswers = choices
-            notifyDataSetChanged()
-        }
-    }
-
-    private fun showAnswer(answers: List<Answer>) {
-        answerAdapter.apply {
-            this.answers = answers
-            notifyDataSetChanged()
-        }
+    private fun showSuccessMessage(message: String) {
+        Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
+        setResult(RESULT_SUCCESS)
+        finish()
     }
 
     private fun showErrorMessage(message: String) {

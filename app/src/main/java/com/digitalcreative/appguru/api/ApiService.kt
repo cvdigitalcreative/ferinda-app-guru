@@ -117,4 +117,22 @@ interface ApiService {
         @Path("group_answer_id")
         groupAnswerId: String
     ): BaseResponse<List<Answer>>
+
+    @POST("/guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/{group_id}/soal/")
+    suspend fun addQuestion(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("assignment_id")
+        assignmentId: String,
+
+        @Path("group_id")
+        sectionId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }

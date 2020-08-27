@@ -51,4 +51,6 @@
     <string name="tambah_soal">Tambah Soal</string>
     <string name="pilihan_jawaban">Pilihan Jawaban</string>
     <string name="nilai">Nilai</string>
+    <string name="ya">Ya</string>
+    <string name="tidak">Tidak</string>
 </resources>

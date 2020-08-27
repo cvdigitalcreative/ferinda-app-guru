@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.question
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -22,6 +24,16 @@ class QuestionActivity : AppCompatActivity() {
     private val loadingDialog by loadingDialog()
     private val questionAdapter = QuestionAdapter()
 
+    private lateinit var classId: String
+    private lateinit var assignmentId: String
+    private lateinit var section: Assignment.Section
+
+    private val addQuestionResults =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::handleResultIntent
+        )
+
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
         const val EXTRA_ASSIGNMENT_ID = "extra_assignment_id"
@@ -33,9 +45,9 @@ class QuestionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_question)
         setSupportActionBar(toolbar)
 
-        val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
-        val assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
-        val section = intent.getParcelableExtra<Assignment.Section>(EXTRA_SECTION) ?: return
+        classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
+        assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
+        section = intent.getParcelableExtra(EXTRA_SECTION) ?: return
 
         initObservers()
         viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
@@ -53,14 +65,25 @@ class QuestionActivity : AppCompatActivity() {
         }
 
         fab_question.setOnClickListener {
-            val intent = Intent(this, AddQuestionActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, AddQuestionActivity::class.java).apply {
+                putExtra(AddQuestionActivity.EXTRA_CLASS_ID, classId)
+                putExtra(AddQuestionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
+                putExtra(AddQuestionActivity.EXTRA_SECTION_ID, section.id)
+
+            }
+            addQuestionResults.launch(intent)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    private fun handleResultIntent(result: ActivityResult) {
+        if (result.resultCode == AddQuestionActivity.RESULT_SUCCESS) {
+            viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
+        }
     }
 
     private fun initObservers() {
