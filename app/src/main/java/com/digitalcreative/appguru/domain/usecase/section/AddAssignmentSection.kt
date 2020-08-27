@@ -1,4 +1,4 @@
-package com.digitalcreative.appguru.domain.usecase.assignment
+package com.digitalcreative.appguru.domain.usecase.section
 
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.repository.NetworkRepository

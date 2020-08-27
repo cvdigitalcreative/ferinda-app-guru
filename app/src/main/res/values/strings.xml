@@ -48,4 +48,6 @@
     <string name="tambah_kelas">Tambah Kelas</string>
     <string name="tambah_tugas">Tambah Tugas</string>
     <string name="tambah_bagian">Tambah Bagian</string>
+    <string name="tambah_soal">Tambah Soal</string>
+    <string name="pilihan_jawaban">Pilihan Jawaban</string>
 </resources>

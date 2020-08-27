@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Assignment
-import com.digitalcreative.appguru.domain.usecase.assignment.GetAssignmentQuestion
+import com.digitalcreative.appguru.data.model.GroupAnswer
+import com.digitalcreative.appguru.domain.usecase.question.GetAssignmentQuestion
+import com.digitalcreative.appguru.domain.usecase.question.GetAssignmentQuestionChoice
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 @ActivityRetainedScoped
 class QuestionViewModel @ViewModelInject constructor(
     private val getQuestionUseCase: GetAssignmentQuestion,
+    private val getChoiceUseCase: GetAssignmentQuestionChoice,
     private val preferences: UserPreferences
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
@@ -22,6 +25,9 @@ class QuestionViewModel @ViewModelInject constructor(
 
     private val mQuestion = MutableLiveData<List<Assignment.Section.Question>>()
     val question = mQuestion
+
+    private val mChoice = MutableLiveData<List<GroupAnswer>>()
+    val choice = mChoice
 
     private val mSuccessMessage = MutableLiveData<String>()
     val successMessage = mSuccessMessage
@@ -37,6 +43,24 @@ class QuestionViewModel @ViewModelInject constructor(
             when (val response = getQuestionUseCase(teacherId, classId, assignmentId, sectionId)) {
                 is Result.Success -> {
                     mQuestion.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun getAssignmentQuestionChoice() {
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            when (val response = getChoiceUseCase()) {
+                is Result.Success -> {
+                    mChoice.postValue((response.data))
                     mLoading.postValue(false)
                 }
 

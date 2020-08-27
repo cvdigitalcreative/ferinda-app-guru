@@ -65,20 +65,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_bold"
-        android:text="@string/pilihan"
+        android:text="@string/pilihan_jawaban"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout14"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
-
-    <Button
-        android:id="@+id/btn_add_choice"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tambah_pilihan"
-        app:layout_constraintBottom_toBottomOf="@+id/textView15"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
-        app:layout_constraintTop_toTopOf="@+id/textView15" />
 
     <Button
         android:id="@+id/btn_add_question"
@@ -91,4 +81,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_group_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_group_answer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

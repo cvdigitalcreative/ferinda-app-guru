@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Assignment
-import com.digitalcreative.appguru.domain.usecase.assignment.AddAssignmentSection
+import com.digitalcreative.appguru.domain.usecase.section.AddAssignmentSection
 import com.digitalcreative.appguru.domain.usecase.section.GetAssignmentSection
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences

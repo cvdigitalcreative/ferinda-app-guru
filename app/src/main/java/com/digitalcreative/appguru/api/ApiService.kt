@@ -108,4 +108,7 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @GET("guru/grup-pilihan-soal/")
+    suspend fun getGroupChoiceType(): BaseResponse<List<GroupAnswer>>
 }

@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.question
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,11 @@ class QuestionActivity : AppCompatActivity() {
             adapter = questionAdapter
             layoutManager = LinearLayoutManager(this@QuestionActivity)
             setHasFixedSize(true)
+        }
+
+        fab_question.setOnClickListener {
+            val intent = Intent(this, AddQuestionActivity::class.java)
+            startActivity(intent)
         }
     }
 
