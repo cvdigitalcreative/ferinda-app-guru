@@ -35,7 +35,7 @@ class SectionActivity : AppCompatActivity() {
 
         view_pager.adapter = ViewPagerAdapter(this, Bundle().apply {
             putString(SectionFragment.EXTRA_CLASS_ID, classId)
-            putString(SectionFragment.EXTRA_ASSIGNMENT_ID, assignment.id)
+            putParcelable(SectionFragment.EXTRA_ASSIGNMENT, assignment)
         })
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
             tab.text = getString(

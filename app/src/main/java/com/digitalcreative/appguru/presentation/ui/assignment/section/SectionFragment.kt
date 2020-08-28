@@ -28,7 +28,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
     private val sectionAdapter = SectionAdapter()
 
     private lateinit var classId: String
-    private lateinit var assignmentId: String
+    private lateinit var assignment: Assignment
 
     private val addSectionResults =
         registerForActivityResult(
@@ -38,7 +38,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
-        const val EXTRA_ASSIGNMENT_ID = "extra_assignment_ID"
+        const val EXTRA_ASSIGNMENT = "extra_assignment"
     }
 
     override fun onCreateView(
@@ -52,7 +52,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
         super.onActivityCreated(savedInstanceState)
 
         classId = arguments?.getString(EXTRA_CLASS_ID) ?: return
-        assignmentId = arguments?.getString(EXTRA_ASSIGNMENT_ID) ?: return
+        assignment = arguments?.getParcelable(EXTRA_ASSIGNMENT) ?: return
 
         sectionAdapter.listener = this
 
@@ -65,26 +65,27 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
         fab_assignment_section.setOnClickListener {
             val intent = Intent(requireContext(), AddSectionActivity::class.java).apply {
                 putExtra(AddSectionActivity.EXTRA_CLASS_ID, classId)
-                putExtra(AddSectionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
+                putExtra(AddSectionActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
             }
             addSectionResults.launch(intent)
         }
 
         initObservers()
-        viewModel.getAssignmentSection(classId, assignmentId)
+        viewModel.getAssignmentSection(classId, assignment.id)
     }
 
     override fun onItemClicked(section: Assignment.Section) {
         val intent = Intent(requireContext(), QuestionActivity::class.java).apply {
             putExtra(QuestionActivity.EXTRA_CLASS_ID, classId)
-            putExtra(QuestionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
+            putExtra(QuestionActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
+            putExtra(QuestionActivity.EXTRA_SECTION, section)
         }
         startActivity(intent)
     }
 
     private fun handleResultIntent(result: ActivityResult) {
         if (result.resultCode == AddSectionActivity.RESULT_SUCCESS) {
-            viewModel.getAssignmentSection(classId, assignmentId)
+            viewModel.getAssignmentSection(classId, assignment.id)
         }
     }
 

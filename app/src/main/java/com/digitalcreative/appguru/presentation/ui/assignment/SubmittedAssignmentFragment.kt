@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
+import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.presentation.adapter.StudentAdapter
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionViewModel
@@ -25,11 +26,11 @@ class SubmittedAssignmentFragment : Fragment() {
     private val studentAdapter = StudentAdapter()
 
     private lateinit var classId: String
-    private lateinit var assignmentId: String
+    private lateinit var assignment: Assignment
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
-        const val EXTRA_ASSIGNMENT_ID = "extra_assignment_ID"
+        const val EXTRA_ASSIGNMENT = "extra_assignment"
     }
 
     override fun onCreateView(
@@ -43,7 +44,7 @@ class SubmittedAssignmentFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         classId = arguments?.getString(EXTRA_CLASS_ID) ?: return
-        assignmentId = arguments?.getString(EXTRA_ASSIGNMENT_ID) ?: return
+        assignment = arguments?.getParcelable(EXTRA_ASSIGNMENT) ?: return
 
         rv_student.apply {
             adapter = studentAdapter
@@ -52,7 +53,7 @@ class SubmittedAssignmentFragment : Fragment() {
         }
 
         initObservers()
-        viewModel.getAssignmentSubmitted(classId, assignmentId)
+        viewModel.getAssignmentSubmitted(classId, assignment.id)
     }
 
     private fun initObservers() {
