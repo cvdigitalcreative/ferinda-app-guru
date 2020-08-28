@@ -14,21 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.assignment.detail.DetailAssignmentActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.classroom.AddClassroomActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.question.AddQuestionActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.assignment.section.AddSectionActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.assignment.section.SectionActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.question.QuestionActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.assignment.AddAssignmentActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.report.detail.DetailReportActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.report.ReportActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.student.AddStudentActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.assignment.AssignmentActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.classroom.ClassroomActivity" />
-        <activity android:name="com.digitalcreative.appguru.presentation.ui.login.LoginActivity">
+        <activity android:name=".presentation.ui.assignment.section.SubmittedActivity"></activity>
+        <activity android:name=".presentation.ui.assignment.detail.DetailAssignmentActivity" />
+        <activity android:name=".presentation.ui.classroom.AddClassroomActivity" />
+        <activity android:name=".presentation.ui.question.AddQuestionActivity" />
+        <activity android:name=".presentation.ui.assignment.section.AddSectionActivity" />
+        <activity android:name=".presentation.ui.assignment.section.SectionActivity" />
+        <activity android:name=".presentation.ui.question.QuestionActivity" />
+        <activity android:name=".presentation.ui.assignment.AddAssignmentActivity" />
+        <activity android:name=".presentation.ui.report.detail.DetailReportActivity" />
+        <activity android:name=".presentation.ui.report.ReportActivity" />
+        <activity android:name=".presentation.ui.student.AddStudentActivity" />
+        <activity android:name=".presentation.ui.assignment.AssignmentActivity" />
+        <activity android:name=".presentation.ui.classroom.ClassroomActivity" />
+        <activity android:name=".presentation.ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

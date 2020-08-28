@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.assignment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,14 @@ import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.presentation.adapter.StudentAdapter
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionViewModel
+import com.digitalcreative.appguru.presentation.ui.assignment.section.SubmittedActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_submitted_assignment.*
 
 @AndroidEntryPoint
-class SubmittedAssignmentFragment : Fragment() {
+class SubmittedAssignmentFragment : Fragment(), StudentAdapter.OnClickListener {
 
     private val viewModel by viewModels<SectionViewModel>()
     private val loadingDialog by loadingDialog()
@@ -46,6 +48,8 @@ class SubmittedAssignmentFragment : Fragment() {
         classId = arguments?.getString(EXTRA_CLASS_ID) ?: return
         assignment = arguments?.getParcelable(EXTRA_ASSIGNMENT) ?: return
 
+        studentAdapter.listener = this
+
         rv_student.apply {
             adapter = studentAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -54,6 +58,15 @@ class SubmittedAssignmentFragment : Fragment() {
 
         initObservers()
         viewModel.getAssignmentSubmitted(classId, assignment.id)
+    }
+
+    override fun onItemClicked(student: Student) {
+        val intent = Intent(requireContext(), SubmittedActivity::class.java).apply {
+            putExtra(SubmittedActivity.EXTRA_CLASS_ID, classId)
+            putExtra(SubmittedActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
+            putExtra(SubmittedActivity.EXTRA_STUDENT, student)
+        }
+        startActivity(intent)
     }
 
     private fun initObservers() {

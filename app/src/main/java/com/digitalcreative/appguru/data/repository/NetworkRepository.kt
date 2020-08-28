@@ -341,4 +341,27 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
+
+    suspend fun getAssignmentSectionSubmitted(
+        teacherId: String,
+        classId: String,
+        studentId: String,
+        assignmentId: String
+    ): Result<Submitted> {
+        return try {
+            val response =
+                service.getAssignmentSectionSubmitted(teacherId, classId, studentId, assignmentId)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetAssignmentSectionSubmitted  -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetAssignmentSectionSubmitted -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
 }
