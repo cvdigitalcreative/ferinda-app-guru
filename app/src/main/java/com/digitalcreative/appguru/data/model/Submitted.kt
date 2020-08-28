@@ -29,7 +29,7 @@ data class Submitted(
             val question: String,
 
             @SerializedName("jawaban")
-            val choices: Choice
+            val choices: Choice?
         ) : Parcelable {
             @Parcelize
             data class Choice(

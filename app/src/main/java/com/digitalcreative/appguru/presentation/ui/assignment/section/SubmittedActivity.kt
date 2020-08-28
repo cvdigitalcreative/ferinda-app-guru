@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.assignment.section
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.data.model.Submitted
 import com.digitalcreative.appguru.presentation.adapter.SubmittedAdapter
+import com.digitalcreative.appguru.presentation.ui.answer.AnswerActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_submitted.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
-class SubmittedActivity : AppCompatActivity() {
+class SubmittedActivity : AppCompatActivity(), SubmittedAdapter.OnClickListener {
 
     private val viewModel by viewModels<SubmittedViewModel>()
     private val loadingDialog by loadingDialog()
@@ -47,6 +49,8 @@ class SubmittedActivity : AppCompatActivity() {
             title = student.name
         }
 
+        submittedAdapter.listener = this
+
         rv_submitted.apply {
             adapter = submittedAdapter
             layoutManager = LinearLayoutManager(this@SubmittedActivity)
@@ -55,6 +59,19 @@ class SubmittedActivity : AppCompatActivity() {
 
         initObservers()
         viewModel.getAssignmentSectionSubmitted(classId, student.id, assignmentId)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
+
+    override fun onItemClicked(submitted: Submitted.AssignmentSubmitted) {
+        val intent = Intent(this, AnswerActivity::class.java).apply {
+            putExtra(AnswerActivity.EXTRA_DATA, submitted)
+            putExtra(AnswerActivity.EXTRA_STUDENT, student)
+        }
+        startActivity(intent)
     }
 
     private fun initObservers() {
