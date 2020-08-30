@@ -42,6 +42,7 @@
             android:button="@android:color/transparent"
             android:checked="true"
             android:gravity="center"
+            android:tag="1"
             android:text="@string/bm"
             android:textColor="@drawable/radio_button_text_selector" />
 
@@ -53,6 +54,7 @@
             android:background="@drawable/radio_button_center_selector"
             android:button="@android:color/transparent"
             android:gravity="center"
+            android:tag="2"
             android:text="@string/mm"
             android:textColor="@drawable/radio_button_text_selector" />
 
@@ -64,6 +66,7 @@
             android:background="@drawable/radio_button_center_selector"
             android:button="@android:color/transparent"
             android:gravity="center"
+            android:tag="3"
             android:text="@string/bsh"
             android:textColor="@drawable/radio_button_text_selector" />
 
@@ -75,6 +78,7 @@
             android:background="@drawable/radio_button_right_selector"
             android:button="@android:color/transparent"
             android:gravity="center"
+            android:tag="4"
             android:text="@string/bsb"
             android:textColor="@drawable/radio_button_text_selector" />
     </RadioGroup>

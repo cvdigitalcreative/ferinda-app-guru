@@ -2,6 +2,7 @@ package com.digitalcreative.appguru.presentation.ui.report
 
 import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,10 +11,7 @@ import com.digitalcreative.appguru.data.model.Indicator
 import com.digitalcreative.appguru.data.model.Report
 import com.digitalcreative.appguru.data.model.Semester
 import com.digitalcreative.appguru.data.model.Student
-import com.digitalcreative.appguru.domain.usecase.report.AddReport
-import com.digitalcreative.appguru.domain.usecase.report.GetAllSemester
-import com.digitalcreative.appguru.domain.usecase.report.GetReportIndicator
-import com.digitalcreative.appguru.domain.usecase.report.GetStudentsByClass
+import com.digitalcreative.appguru.domain.usecase.report.*
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.helper.MediaHelper
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
@@ -28,11 +26,12 @@ class ReportViewModel @ViewModelInject constructor(
     private val getStudentUseCase: GetStudentsByClass,
     private val getIndicatorUseCase: GetReportIndicator,
     private val addReportUseCase: AddReport,
+    private val getDetailUseCase: GetDetailReport,
     private val preferences: UserPreferences,
     private val mediaHelper: MediaHelper
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
-    val loading = mLoading
+    val loading: LiveData<Boolean> = mLoading
 
     private val mSemester = MutableLiveData<List<Semester>>()
     val semester = mSemester
@@ -46,6 +45,9 @@ class ReportViewModel @ViewModelInject constructor(
     private val mReport = MutableLiveData<Report>()
     val report = mReport
 
+    private val mDetailReport = MutableLiveData<List<Indicator>>()
+    val detailReport: LiveData<List<Indicator>> = mDetailReport
+
     private val mSuccessMessage = MutableLiveData<String>()
     val successMessage = mSuccessMessage
 
@@ -57,11 +59,6 @@ class ReportViewModel @ViewModelInject constructor(
     var semesterId = ""
 
     var studentId = ""
-
-    init {
-        getAllSemester()
-        getReportIndicator()
-    }
 
     fun addIndicator(id: String) {
         indicatorList.add(id)
@@ -109,7 +106,7 @@ class ReportViewModel @ViewModelInject constructor(
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val certificate = File(preferences.getString(UserPreferences.KEY_CERTIFICATE))
 
             if (isImageEmpty(certificate)) {
@@ -120,27 +117,32 @@ class ReportViewModel @ViewModelInject constructor(
             mLoading.postValue(true)
             mediaHelper.compressImage(certificate)
 
+            indicatorList.sort()
+
             val indicatorsFlatten = indicatorList.joinToString(prefix = "[", postfix = "]")
             val teacherId = preferences.getString(UserPreferences.KEY_NIP)
-            val response = addReportUseCase(
-                teacherId,
-                classId,
-                semesterId,
-                studentId,
-                indicatorsFlatten,
-                certificate
-            )
 
-            when (response) {
-                is Result.Success -> {
-                    clearTempImages()
-                    mReport.postValue((response.data))
-                    mLoading.postValue(false)
-                }
+            launch(Dispatchers.IO) {
+                val response = addReportUseCase(
+                    teacherId,
+                    classId,
+                    semesterId,
+                    studentId,
+                    indicatorsFlatten,
+                    certificate
+                )
 
-                is Result.ErrorRequest -> {
-                    mErrorMessage.postValue(response.message)
-                    mLoading.postValue(false)
+                when (response) {
+                    is Result.Success -> {
+                        clearTempImages()
+                        mReport.postValue((response.data))
+                        mLoading.postValue(false)
+                    }
+
+                    is Result.ErrorRequest -> {
+                        mErrorMessage.postValue(response.message)
+                        mLoading.postValue(false)
+                    }
                 }
             }
         }
@@ -165,7 +167,26 @@ class ReportViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getAllSemester() {
+    fun getDetailReport(reportId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response = getDetailUseCase(teacherId, reportId)) {
+                is Result.Success -> {
+                    mDetailReport.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun getAllSemester() {
         viewModelScope.launch(Dispatchers.IO) {
             mLoading.postValue(true)
 
@@ -183,7 +204,7 @@ class ReportViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getReportIndicator() {
+    fun getReportIndicator() {
         viewModelScope.launch(Dispatchers.IO) {
             mLoading.postValue(true)
 

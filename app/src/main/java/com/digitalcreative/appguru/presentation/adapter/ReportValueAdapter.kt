@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.data.model.Question
+import com.digitalcreative.appguru.data.model.Indicator
 import kotlinx.android.synthetic.main.item_report_value.view.*
 
 class ReportValueAdapter : RecyclerView.Adapter<ReportValueAdapter.ViewHolder>() {
-    var questions = listOf<Question>()
+    var choices = listOf<Indicator.IndicatorItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -17,17 +17,17 @@ class ReportValueAdapter : RecyclerView.Adapter<ReportValueAdapter.ViewHolder>()
         )
     }
 
-    override fun getItemCount(): Int = questions.size
+    override fun getItemCount(): Int = choices.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val question = questions[position]
+        val question = choices[position]
         holder.bind(question)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(question: Question) {
+        fun bind(choices: Indicator.IndicatorItem) {
             with(itemView) {
-                tv_value_name.text = question.name
+                tv_value_name.text = choices.name
             }
         }
     }

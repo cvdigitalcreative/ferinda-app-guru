@@ -189,4 +189,13 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Report>
+
+    @GET("guru/{teacher_id}/rapot/{report_id}")
+    suspend fun getDetailReport(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("report_id")
+        reportId: String
+    ): BaseResponse<List<Indicator>>
 }

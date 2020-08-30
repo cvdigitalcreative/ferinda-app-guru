@@ -25,6 +25,7 @@ import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.presentation.adapter.CustomDropdownAdapter
 import com.digitalcreative.appguru.presentation.adapter.IndicatorAdapter
 import com.digitalcreative.appguru.presentation.ui.chooser.ChooserFragment
+import com.digitalcreative.appguru.presentation.ui.report.detail.DetailReportActivity
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.helper.isCameraPermissionAllowed
 import com.digitalcreative.appguru.utils.helper.isStoragePermissionAllowed
@@ -113,6 +114,8 @@ class ReportActivity : AppCompatActivity(), IndicatorAdapter.OnClickListener,
         initObservers()
         setupBottomSheetChooser()
 
+        viewModel.getAllSemester()
+        viewModel.getReportIndicator()
         viewModel.getStudentsByClass(classId)
     }
 
@@ -279,7 +282,12 @@ class ReportActivity : AppCompatActivity(), IndicatorAdapter.OnClickListener,
     }
 
     private fun showReport(report: Report) {
-        // TODO : MOVE TO NEXT PAGE
+        val semester = dropdown_semester.text.toString()
+        val intent = Intent(this, DetailReportActivity::class.java).apply {
+            putExtra(DetailReportActivity.EXTRA_ID, report.id)
+            putExtra(DetailReportActivity.EXTRA_NAME, semester)
+        }
+        startActivity(intent)
     }
 
     private fun showSuccessMessage(message: String) {
