@@ -61,4 +61,13 @@
     <string name="indikator_raport">Indikator Raport</string>
     <string name="selanjutnya">Selanjutnya</string>
     <string name="isi_raport">Isi Raport</string>
+    <string name="image_certificate">Image Certificate</string>
+    <string name="sertifikat">Sertifikat</string>
+    <string name="icon_camera">Icon Camera</string>
+    <string name="choose_file">Choose File</string>
+    <string name="icon_folder">Icon Folder</string>
+    <string name="take_a_picture">Take a Picture</string>
+    <string name="pilih_gambar">Pilih Gambar</string>
+    <string name="ambil_gambar">Ambil Gambar</string>
+    <string name="permission_error">Harap berikan izin untuk melanjutkan</string>
 </resources>

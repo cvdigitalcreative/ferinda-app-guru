@@ -1,6 +1,8 @@
 package com.digitalcreative.appguru.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Report(
-    val id: Int,
-    val name: String
+    @SerializedName("id_rapot")
+    val id: String
 )

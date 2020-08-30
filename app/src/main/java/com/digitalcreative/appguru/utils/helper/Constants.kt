@@ -13,4 +13,5 @@ object Constants {
     const val CONNECTION_ERROR = "Koneksi bermasalah, silakan coba lagi"
     const val UNKNOWN_ERROR = "Terjadi kesalahan"
     const val EMPTY_INPUT_ERROR = "Input tidak boleh kosong"
+    const val EMPTY_IMAGE_ERROR = "Gambar tidak boleh kosong"
 }

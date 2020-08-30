@@ -180,4 +180,13 @@ interface ApiService {
         @Path("class_id")
         classId: String
     ): BaseResponse<List<Student>>
+
+    @POST("guru/{teacher_id}/rapot/")
+    suspend fun addReport(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Report>
 }

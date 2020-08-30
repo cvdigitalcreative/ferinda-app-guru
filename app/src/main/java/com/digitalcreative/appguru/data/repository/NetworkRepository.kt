@@ -7,7 +7,10 @@ import com.digitalcreative.appguru.data.model.*
 import com.digitalcreative.appguru.utils.helper.Constants.CONNECTION_ERROR
 import com.digitalcreative.appguru.utils.helper.Constants.STATUS_SUCCESS
 import com.digitalcreative.appguru.utils.helper.Constants.UNKNOWN_ERROR
+import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 import java.net.ConnectException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -412,6 +415,39 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "GetStudentsByClass -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun addReport(
+        teacherId: String,
+        classId: String,
+        semesterId: String,
+        studentId: String,
+        indicators: String,
+        certificate: File
+    ): Result<Report> {
+        return try {
+            val requestBody = RequestBody.create(MediaType.parse("image/*"), certificate)
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("id_kelas", classId)
+                .addFormDataPart("id_semester", semesterId)
+                .addFormDataPart("id_indikator", indicators)
+                .addFormDataPart("nis", studentId)
+                .addFormDataPart("sertifikat", certificate.name, requestBody)
+                .build()
+            val response = service.addReport(teacherId, body)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "AddReport -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "AddReport -> ${e.localizedMessage}")
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }

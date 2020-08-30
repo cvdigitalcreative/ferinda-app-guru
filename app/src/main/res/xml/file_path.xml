@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="camera"
+        path="Android/data/com.digitalcreative.appguru/files/Pictures" />
+
+    <external-path
+        name="gallery"
+        path="." />
+</paths>

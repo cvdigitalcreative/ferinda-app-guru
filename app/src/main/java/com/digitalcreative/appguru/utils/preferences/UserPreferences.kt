@@ -17,6 +17,7 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     companion object {
         private const val PREFERENCE_FILENAME = "user_preferences"
         const val KEY_NIP = "nip"
+        const val KEY_CERTIFICATE = "certificate"
     }
 
     init {
@@ -40,5 +41,11 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
 
     fun getString(key: String): String {
         return preference.getString(key, null) ?: ""
+    }
+
+    fun remove(key: String) {
+        preference.edit {
+            remove(key)
+        }
     }
 }
