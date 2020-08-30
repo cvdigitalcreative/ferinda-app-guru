@@ -56,4 +56,9 @@
     <string name="list_bagian">List Bagian</string>
     <string name="tugas_dikumpul">Tugas Dikumpul</string>
     <string name="ui_avatar">https://ui-avatars.com/api/?name=%1$s&amp;size=128&amp;rounded=true&amp;background=4A5DFF&amp;color=FFFFFF&amp;format=png</string>
+    <string name="raport_description">Berikan penilaian untuk mengetahui hasil perkembangan murid</string>
+    <string name="semester">Semester</string>
+    <string name="indikator_raport">Indikator Raport</string>
+    <string name="selanjutnya">Selanjutnya</string>
+    <string name="isi_raport">Isi Raport</string>
 </resources>

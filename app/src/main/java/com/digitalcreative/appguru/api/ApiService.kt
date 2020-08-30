@@ -162,4 +162,22 @@ interface ApiService {
         @Path("assignment_id")
         assignmentId: String
     ): BaseResponse<Submitted>
+
+    @GET("guru/{teacher_id}/rapot/indikator/")
+    suspend fun getReportIndicator(
+        @Path("teacher_id")
+        teacherId: String
+    ): BaseResponse<List<Indicator>>
+
+    @GET("guru/semester/")
+    suspend fun getAllSemester(): BaseResponse<List<Semester>>
+
+    @GET("guru/{teacher_id}/kelas/{class_id}/murid/")
+    suspend fun getStudentsByClass(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String
+    ): BaseResponse<List<Student>>
 }

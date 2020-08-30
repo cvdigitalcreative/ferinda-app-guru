@@ -13,6 +13,7 @@ import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.AssignmentAdapter
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionActivity
+import com.digitalcreative.appguru.presentation.ui.report.ReportActivity
 import com.digitalcreative.appguru.presentation.ui.student.AddStudentActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,6 +83,11 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
 
         fab_raport.setOnClickListener {
             fab_menu.toggle(true)
+
+            val intent = Intent(this, ReportActivity::class.java).apply {
+                putExtra(ReportActivity.EXTRA_ID, classroom.id)
+            }
+            startActivity(intent)
         }
     }
 
