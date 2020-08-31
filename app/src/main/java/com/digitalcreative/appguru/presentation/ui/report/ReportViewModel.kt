@@ -22,6 +22,7 @@ import com.digitalcreative.appguru.utils.helper.MediaHelper
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -33,6 +34,7 @@ class ReportViewModel @ViewModelInject constructor(
     private val addReportUseCase: AddReport,
     private val getDetailUseCase: GetDetailReport,
     private val sendAnswerUseCase: SendReportAnswer,
+    private val sendConclusionUseCase: SendConclusion,
     private val preferences: UserPreferences,
     private val mediaHelper: MediaHelper
 ) : ViewModel() {
@@ -270,21 +272,30 @@ class ReportViewModel @ViewModelInject constructor(
         )
     }
 
-    fun sendReportAnswer(answers: Map<String, String>, reportId: String) {
+    fun sendReportAnswer(answers: Map<String, String>, reportId: String, conclusion: String) {
         viewModelScope.launch(Dispatchers.IO) {
             mLoading.postValue(true)
 
             val teacherId = preferences.getString(UserPreferences.KEY_NIP)
-            when (val response = sendAnswerUseCase(teacherId, reportId, answers)) {
-                is Result.Success -> {
-                    mSuccessMessage.postValue((response.data))
-                    mLoading.postValue(false)
-                }
+            val response = async {
+                val answer = sendAnswerUseCase(teacherId, reportId, answers)
+                val conclusionResponse = sendConclusionUseCase(teacherId, reportId, conclusion)
 
-                is Result.ErrorRequest -> {
-                    mErrorMessage.postValue(response.message)
-                    mLoading.postValue(false)
-                }
+                mapOf(
+                    "answer" to answer,
+                    "conclusion" to conclusionResponse
+                )
+            }
+
+            val responseAnswer = response.await()["answer"]
+            val responseConclusion = response.await()["conclusion"]
+            if (responseAnswer is Result.Success && responseConclusion is Result.Success) {
+                mSuccessMessage.postValue((responseAnswer.data))
+                mLoading.postValue(false)
+            } else if (responseAnswer is Result.ErrorRequest && responseConclusion is Result.ErrorRequest) {
+                mErrorMessage.postValue(responseAnswer.message)
+                mErrorMessage.postValue(responseConclusion.message)
+                mLoading.postValue(false)
             }
         }
     }

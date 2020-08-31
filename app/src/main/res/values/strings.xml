@@ -71,4 +71,6 @@
     <string name="ambil_gambar">Ambil Gambar</string>
     <string name="permission_error">Harap berikan izin untuk melanjutkan</string>
     <string name="raport_cancel">Batal Isi Raport?</string>
+    <string name="kesimpulan">Kesimpulan</string>
+    <string name="kirim">Kirim</string>
 </resources>

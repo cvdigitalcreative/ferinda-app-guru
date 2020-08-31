@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Indicator
 import com.digitalcreative.appguru.presentation.adapter.ReportIndicatorAdapter
+import com.digitalcreative.appguru.presentation.ui.dialog.ConclusionDialog
 import com.digitalcreative.appguru.presentation.ui.report.ReportViewModel
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_detail_report.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
-class DetailReportActivity : AppCompatActivity() {
+class DetailReportActivity : AppCompatActivity(), ConclusionDialog.OnClickListener {
 
     private val viewModel by viewModels<ReportViewModel>()
     private val loadingDialog by loadingDialog()
@@ -26,6 +27,7 @@ class DetailReportActivity : AppCompatActivity() {
     private lateinit var reportId: String
     private lateinit var indicators: List<Indicator>
     private lateinit var manager: LinearLayoutManager
+    private lateinit var conclusionDialog: ConclusionDialog
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -41,6 +43,7 @@ class DetailReportActivity : AppCompatActivity() {
         reportId = intent.getStringExtra(EXTRA_ID) ?: return
 
         manager = LinearLayoutManager(this)
+        conclusionDialog = ConclusionDialog(supportFragmentManager, this)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -55,8 +58,7 @@ class DetailReportActivity : AppCompatActivity() {
         }
 
         btn_add.setOnClickListener {
-            val answers = viewModel.getReportAnswer(manager, indicators)
-            viewModel.sendReportAnswer(answers, reportId)
+            conclusionDialog.showDialog()
         }
 
         initObservers()
@@ -70,6 +72,12 @@ class DetailReportActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         showAlertDialog()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onSend(conclusion: String) {
+        conclusionDialog.closeDialog()
+        val answers = viewModel.getReportAnswer(manager, indicators)
+        viewModel.sendReportAnswer(answers, reportId, conclusion)
     }
 
     private fun initObservers() {

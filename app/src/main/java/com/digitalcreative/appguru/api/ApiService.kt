@@ -210,4 +210,16 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @POST("guru/{teacher_id}/rapot/{report_id}/kesimpulan/")
+    suspend fun sendConclusion(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("report_id")
+        reportId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }
