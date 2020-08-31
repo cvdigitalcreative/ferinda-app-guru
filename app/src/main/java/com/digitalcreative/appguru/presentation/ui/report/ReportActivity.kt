@@ -288,6 +288,7 @@ class ReportActivity : AppCompatActivity(), IndicatorAdapter.OnClickListener,
             putExtra(DetailReportActivity.EXTRA_NAME, semester)
         }
         startActivity(intent)
+        finish()
     }
 
     private fun showSuccessMessage(message: String) {

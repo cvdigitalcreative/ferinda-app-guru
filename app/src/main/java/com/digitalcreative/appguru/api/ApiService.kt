@@ -198,4 +198,16 @@ interface ApiService {
         @Path("report_id")
         reportId: String
     ): BaseResponse<List<Indicator>>
+
+    @POST("guru/{teacher_id}/rapot/{report_id}/jawab/")
+    suspend fun sendReportAnswer(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("report_id")
+        reportId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }

@@ -1,11 +1,16 @@
 package com.digitalcreative.appguru.presentation.ui.report
 
 import android.net.Uri
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Indicator
 import com.digitalcreative.appguru.data.model.Report
@@ -27,6 +32,7 @@ class ReportViewModel @ViewModelInject constructor(
     private val getIndicatorUseCase: GetReportIndicator,
     private val addReportUseCase: AddReport,
     private val getDetailUseCase: GetDetailReport,
+    private val sendAnswerUseCase: SendReportAnswer,
     private val preferences: UserPreferences,
     private val mediaHelper: MediaHelper
 ) : ViewModel() {
@@ -212,6 +218,66 @@ class ReportViewModel @ViewModelInject constructor(
             when (val response = getIndicatorUseCase(teacherId)) {
                 is Result.Success -> {
                     mIndicator.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun getReportAnswer(
+        manager: LinearLayoutManager,
+        indicators: List<Indicator>
+    ): Map<String, String> {
+        var listIndicatorFlatten = ""
+        val listAnswer = mutableListOf<String>()
+
+        viewModelScope.launch {
+            for ((i, _) in indicators.withIndex()) {
+                val container = manager.getChildAt(i)
+                val rvIndicator = container?.findViewById<RecyclerView>(R.id.rv_detail_indicator)
+
+                val childManager = rvIndicator?.layoutManager
+                val childCount = childManager?.itemCount ?: 0
+
+                for (j in 0 until childCount) {
+                    val childContainer = childManager?.getChildAt(j)
+                    val radioGroup = childContainer?.findViewById<RadioGroup>(R.id.rg_choice)
+
+                    radioGroup?.let {
+                        val rbId = radioGroup.checkedRadioButtonId
+                        val rb = childContainer.findViewById<RadioButton>(rbId)
+                        val answerId = rb.tag as String
+
+                        listAnswer.add(answerId)
+                    }
+                }
+            }
+
+            listIndicatorFlatten = indicators.flatMap {
+                it.items
+            }.joinToString(prefix = "[", postfix = "]") { it.id }
+        }
+
+        val listAnswerFlatten = listAnswer.joinToString(prefix = "[", postfix = "]")
+        return mapOf(
+            "indicator" to listIndicatorFlatten,
+            "answer" to listAnswerFlatten
+        )
+    }
+
+    fun sendReportAnswer(answers: Map<String, String>, reportId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response = sendAnswerUseCase(teacherId, reportId, answers)) {
+                is Result.Success -> {
+                    mSuccessMessage.postValue((response.data))
                     mLoading.postValue(false)
                 }
 

@@ -24,6 +24,8 @@ class DetailReportActivity : AppCompatActivity() {
     private val reportIndicatorAdapter = ReportIndicatorAdapter()
 
     private lateinit var reportId: String
+    private lateinit var indicators: List<Indicator>
+    private lateinit var manager: LinearLayoutManager
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -38,6 +40,8 @@ class DetailReportActivity : AppCompatActivity() {
         val semester = intent.getStringExtra(EXTRA_NAME) ?: return
         reportId = intent.getStringExtra(EXTRA_ID) ?: return
 
+        manager = LinearLayoutManager(this)
+
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
@@ -46,8 +50,13 @@ class DetailReportActivity : AppCompatActivity() {
 
         rv_raport_value.apply {
             adapter = reportIndicatorAdapter
-            layoutManager = LinearLayoutManager(this@DetailReportActivity)
+            layoutManager = manager
             setHasFixedSize(true)
+        }
+
+        btn_add.setOnClickListener {
+            val answers = viewModel.getReportAnswer(manager, indicators)
+            viewModel.sendReportAnswer(answers, reportId)
         }
 
         initObservers()
@@ -83,6 +92,8 @@ class DetailReportActivity : AppCompatActivity() {
     }
 
     private fun showDetailReport(indicators: List<Indicator>) {
+        this.indicators = indicators
+
         reportIndicatorAdapter.apply {
             this.indicators = indicators
             notifyDataSetChanged()
