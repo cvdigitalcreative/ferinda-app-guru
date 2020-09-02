@@ -73,4 +73,5 @@
     <string name="raport_cancel">Batal Isi Raport?</string>
     <string name="kesimpulan">Kesimpulan</string>
     <string name="kirim">Kirim</string>
+    <string name="total_nilai">Total Nilai :</string>
 </resources>

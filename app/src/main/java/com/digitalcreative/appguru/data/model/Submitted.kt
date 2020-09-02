@@ -6,6 +6,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Submitted(
+    @SerializedName("total_nilai")
+    val points: String,
+
     @SerializedName("jawaban_soal")
     val data: List<AssignmentSubmitted>
 ) : Parcelable {

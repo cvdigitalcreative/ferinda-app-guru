@@ -94,6 +94,8 @@ class SubmittedActivity : AppCompatActivity(), SubmittedAdapter.OnClickListener 
     }
 
     private fun showSubmitted(submitted: Submitted) {
+        tv_points.text = submitted.points
+
         submittedAdapter.apply {
             this.submitteds = submitted.data
             notifyDataSetChanged()
