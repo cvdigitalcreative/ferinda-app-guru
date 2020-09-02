@@ -13,9 +13,11 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.presentation.adapter.StudentAdapter
+import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionActivity
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionViewModel
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SubmittedActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_submitted_assignment.*
@@ -29,6 +31,7 @@ class SubmittedAssignmentFragment : Fragment(), StudentAdapter.OnClickListener {
 
     private lateinit var classId: String
     private lateinit var assignment: Assignment
+    private lateinit var fabMain: FloatingActionButton
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
@@ -48,6 +51,8 @@ class SubmittedAssignmentFragment : Fragment(), StudentAdapter.OnClickListener {
         classId = arguments?.getString(EXTRA_CLASS_ID) ?: return
         assignment = arguments?.getParcelable(EXTRA_ASSIGNMENT) ?: return
 
+        fabMain = (requireActivity() as SectionActivity).findViewById(R.id.fab_main)
+
         studentAdapter.listener = this
 
         rv_student.apply {
@@ -58,6 +63,11 @@ class SubmittedAssignmentFragment : Fragment(), StudentAdapter.OnClickListener {
 
         initObservers()
         viewModel.getAssignmentSubmitted(classId, assignment.id)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fabMain.hide()
     }
 
     override fun onItemClicked(student: Student) {

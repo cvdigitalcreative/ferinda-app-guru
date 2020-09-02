@@ -16,6 +16,7 @@ import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.presentation.adapter.SectionAdapter
 import com.digitalcreative.appguru.presentation.ui.question.QuestionActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_section.*
@@ -29,6 +30,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
 
     private lateinit var classId: String
     private lateinit var assignment: Assignment
+    private lateinit var fabMain: FloatingActionButton
 
     private val addSectionResults =
         registerForActivityResult(
@@ -54,6 +56,8 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
         classId = arguments?.getString(EXTRA_CLASS_ID) ?: return
         assignment = arguments?.getParcelable(EXTRA_ASSIGNMENT) ?: return
 
+        fabMain = (requireActivity() as SectionActivity).findViewById(R.id.fab_main)
+
         sectionAdapter.listener = this
 
         rv_assignment_section.apply {
@@ -62,7 +66,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
             setHasFixedSize(true)
         }
 
-        fab_assignment_section.setOnClickListener {
+        fabMain.setOnClickListener {
             val intent = Intent(requireContext(), AddSectionActivity::class.java).apply {
                 putExtra(AddSectionActivity.EXTRA_CLASS_ID, classId)
                 putExtra(AddSectionActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
@@ -72,6 +76,11 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
 
         initObservers()
         viewModel.getAssignmentSection(classId, assignment.id)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fabMain.show()
     }
 
     override fun onItemClicked(section: Assignment.Section) {
