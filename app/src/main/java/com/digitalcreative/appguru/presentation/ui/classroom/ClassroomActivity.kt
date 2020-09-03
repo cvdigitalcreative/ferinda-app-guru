@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.classroom
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -12,10 +14,12 @@ import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.ClassroomAdapter
 import com.digitalcreative.appguru.presentation.ui.assignment.AssignmentActivity
+import com.digitalcreative.appguru.presentation.ui.login.LoginActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_classroom.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
 class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener {
@@ -32,6 +36,12 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_classroom)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(true)
+            title = getString(R.string.app_name)
+        }
 
         initObservers()
         viewModel.getAllClassroom()
@@ -49,6 +59,20 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
             val intent = Intent(this, AddClassroomActivity::class.java)
             addClassroomResults.launch(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_home, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_logout) {
+            viewModel.logout()
+            showLoginActivity()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClicked(classroom: Classroom) {
@@ -91,5 +115,11 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
 
     private fun showMessage(message: String) {
         Toasty.error(this, message, Toasty.LENGTH_LONG, true).show()
+    }
+
+    private fun showLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

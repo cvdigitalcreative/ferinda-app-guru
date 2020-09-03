@@ -74,4 +74,13 @@ class ClassroomViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            preferences.apply {
+                remove(UserPreferences.KEY_NIP)
+                remove(UserPreferences.KEY_CERTIFICATE)
+            }
+        }
+    }
 }
