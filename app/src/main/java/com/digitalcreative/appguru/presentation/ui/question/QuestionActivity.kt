@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_question.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 @AndroidEntryPoint
-class QuestionActivity : AppCompatActivity() {
+class QuestionActivity : AppCompatActivity(), QuestionAdapter.OnClickListener {
 
     private val viewModel by viewModels<QuestionViewModel>()
     private val loadingDialog by loadingDialog()
@@ -51,6 +51,8 @@ class QuestionActivity : AppCompatActivity() {
         classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
         assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
         section = intent.getParcelableExtra(EXTRA_SECTION) ?: return
+
+        questionAdapter.listener = this
 
         initObservers()
         viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
@@ -97,6 +99,16 @@ class QuestionActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onItemClicked(question: Assignment.Section.Question) {
+        val intent = Intent(this, AddQuestionActivity::class.java).apply {
+            putExtra(AddQuestionActivity.EXTRA_CLASS_ID, classId)
+            putExtra(AddQuestionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
+            putExtra(AddQuestionActivity.EXTRA_SECTION_ID, section.id)
+
+        }
+        startActivity(intent)
     }
 
     private fun handleResultIntent(result: ActivityResult) {

@@ -10,11 +10,13 @@ import kotlinx.android.synthetic.main.item_question.view.*
 
 class QuestionAdapter : RecyclerView.Adapter<QuestionAdapter.ViewHolder>() {
     var questions = listOf<Assignment.Section.Question>()
+    var listener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_question, parent, false)
+                .inflate(R.layout.item_question, parent, false),
+            listener
         )
     }
 
@@ -25,11 +27,20 @@ class QuestionAdapter : RecyclerView.Adapter<QuestionAdapter.ViewHolder>() {
         holder.bind(question)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val listener: OnClickListener?) :
+        RecyclerView.ViewHolder(itemView) {
         fun bind(question: Assignment.Section.Question) {
             with(itemView) {
                 tv_question.text = question.question
+
+                setOnClickListener {
+                    listener?.onItemClicked(question)
+                }
             }
         }
+    }
+
+    interface OnClickListener {
+        fun onItemClicked(question: Assignment.Section.Question)
     }
 }

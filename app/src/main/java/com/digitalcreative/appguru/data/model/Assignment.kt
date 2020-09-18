@@ -40,7 +40,10 @@ data class Assignment(
                 val id: String,
 
                 @SerializedName("pilihan_jawaban")
-                val choice: String
+                val choice: String,
+
+                @SerializedName("bobot")
+                val value: String
             ) : Parcelable
         }
     }
