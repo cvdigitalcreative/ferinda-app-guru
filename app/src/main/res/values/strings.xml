@@ -75,4 +75,5 @@
     <string name="kirim">Kirim</string>
     <string name="total_nilai">Total Nilai :</string>
     <string name="logout">Logout</string>
+    <string name="edit">Edit</string>
 </resources>

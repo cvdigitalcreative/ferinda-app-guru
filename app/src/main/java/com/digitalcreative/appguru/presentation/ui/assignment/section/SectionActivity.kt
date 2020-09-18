@@ -1,9 +1,13 @@
 package com.digitalcreative.appguru.presentation.ui.assignment.section
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
+import com.digitalcreative.appguru.presentation.ui.assignment.AddAssignmentActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_section.*
@@ -43,6 +47,21 @@ class SectionActivity : AppCompatActivity() {
                 else R.string.tugas_dikumpul
             )
         }.attach()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_assignment, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_edit_assignment) {
+            val intent = Intent(this, AddAssignmentActivity::class.java).apply {
+                putExtra(AddAssignmentActivity.EXTRA_ID, classId)
+            }
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {

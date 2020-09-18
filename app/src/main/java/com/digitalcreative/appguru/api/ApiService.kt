@@ -118,7 +118,7 @@ interface ApiService {
         groupAnswerId: String
     ): BaseResponse<List<Answer>>
 
-    @POST("/guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/{group_id}/soal/")
+    @POST("guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/{group_id}/soal/")
     suspend fun addQuestion(
         @Path("teacher_id")
         teacherId: String,
@@ -136,7 +136,7 @@ interface ApiService {
         body: RequestBody
     ): BaseResponse<Nothing>
 
-    @GET("/guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/selesai/")
+    @GET("guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/selesai/")
     suspend fun getAssignmentSubmitted(
         @Path("teacher_id")
         teacherId: String,

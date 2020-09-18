@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String", "BASE_URL", '"https://classico.id:9002/"')
+        buildConfigField("String", "BASE_URL", '"https://api.classico.id/ferinda/"')
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

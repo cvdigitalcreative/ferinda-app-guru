@@ -2,6 +2,8 @@ package com.digitalcreative.appguru.presentation.ui.assignment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -13,6 +15,7 @@ import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.presentation.adapter.AssignmentAdapter
 import com.digitalcreative.appguru.presentation.ui.assignment.section.SectionActivity
+import com.digitalcreative.appguru.presentation.ui.classroom.AddClassroomActivity
 import com.digitalcreative.appguru.presentation.ui.report.ReportActivity
 import com.digitalcreative.appguru.presentation.ui.student.AddStudentActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
@@ -97,6 +100,19 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_class, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_edit_class) {
+            val intent = Intent(this, AddClassroomActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {
