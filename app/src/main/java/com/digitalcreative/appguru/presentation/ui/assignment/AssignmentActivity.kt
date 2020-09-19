@@ -109,8 +109,12 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_edit_class) {
-            val intent = Intent(this, AddClassroomActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, AddClassroomActivity::class.java).apply {
+                putExtra(AddClassroomActivity.EXTRA_TYPE, AddClassroomActivity.TYPE_EDIT)
+                putExtra(AddClassroomActivity.EXTRA_CLASS, classroom.id)
+                putExtra(AddClassroomActivity.EXTRA_DATA, classroom.name)
+            }
+            addAssignmentResults.launch(intent)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -130,6 +134,10 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
 
     private fun handleResultIntent(result: ActivityResult) {
         if (result.resultCode == AddAssignmentActivity.RESULT_SUCCESS) {
+            result.data?.getStringExtra(AddClassroomActivity.EXTRA_RESULT)?.let {
+                supportActionBar?.title = it
+            }
+
             viewModel.getAssignmentByClassroom(classroom.id)
         }
     }

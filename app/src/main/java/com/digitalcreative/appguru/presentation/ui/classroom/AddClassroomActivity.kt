@@ -1,5 +1,6 @@
 package com.digitalcreative.appguru.presentation.ui.classroom
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,11 @@ class AddClassroomActivity : AppCompatActivity() {
     private val loadingDialog by loadingDialog()
 
     companion object {
+        const val EXTRA_TYPE = "extra_type"
+        const val EXTRA_CLASS = "extra_class"
+        const val EXTRA_DATA = "extra_data"
+        const val EXTRA_RESULT = "extra_result"
+        const val TYPE_EDIT = 1
         const val RESULT_SUCCESS = 1
     }
 
@@ -26,17 +32,33 @@ class AddClassroomActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_classroom)
         setSupportActionBar(toolbar)
 
+        val type = intent.getIntExtra(EXTRA_TYPE, 0)
+        val classId = intent.getStringExtra(EXTRA_CLASS) ?: ""
+
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = getString(R.string.tambah_kelas)
+            title =
+                if (type == TYPE_EDIT) getString(R.string.edit_kelas) else getString(R.string.tambah_kelas)
+        }
+
+        if (type == TYPE_EDIT) {
+            btn_add.text = getString(R.string.edit)
+        }
+
+        intent.getStringExtra(EXTRA_DATA)?.let {
+            edt_class_name.setText(it)
         }
 
         initObservers()
 
         btn_add.setOnClickListener {
             val className = edt_class_name.text.toString().trim()
-            viewModel.addClassroom(className)
+            if (type == TYPE_EDIT) {
+                viewModel.editClassroom(classId, className)
+            } else {
+                viewModel.addClassroom(className)
+            }
         }
     }
 
@@ -65,7 +87,9 @@ class AddClassroomActivity : AppCompatActivity() {
 
     private fun showSuccessMessage(message: String) {
         Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
-        setResult(RESULT_SUCCESS)
+        setResult(RESULT_SUCCESS, Intent().apply {
+            putExtra(EXTRA_RESULT, edt_class_name.text.toString().trim())
+        })
         finish()
     }
 

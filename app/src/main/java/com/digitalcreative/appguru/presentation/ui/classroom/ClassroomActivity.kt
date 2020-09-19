@@ -61,6 +61,11 @@ class ClassroomActivity : AppCompatActivity(), ClassroomAdapter.OnClickListener 
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllClassroom()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)
         return super.onCreateOptionsMenu(menu)

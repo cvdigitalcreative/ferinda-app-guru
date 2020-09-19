@@ -76,4 +76,5 @@
     <string name="total_nilai">Total Nilai :</string>
     <string name="logout">Logout</string>
     <string name="edit">Edit</string>
+    <string name="edit_kelas">Edit Kelas</string>
 </resources>
