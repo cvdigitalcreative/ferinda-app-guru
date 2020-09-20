@@ -96,6 +96,11 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAssignmentByClassroom(classroom.id)
+    }
+
     override fun onBackPressed() {
         if (fab_menu.isOpened) {
             fab_menu.toggle(true)

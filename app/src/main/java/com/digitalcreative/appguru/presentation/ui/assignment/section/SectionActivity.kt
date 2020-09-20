@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Assignment
@@ -17,6 +19,11 @@ class SectionActivity : AppCompatActivity() {
 
     private lateinit var classId: String
     private lateinit var assignment: Assignment
+    private val editAssignmentResults =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            this::handleResultIntent
+        )
 
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
@@ -57,9 +64,13 @@ class SectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_edit_assignment) {
             val intent = Intent(this, AddAssignmentActivity::class.java).apply {
+                putExtra(AddAssignmentActivity.EXTRA_TYPE, AddAssignmentActivity.TYPE_EDIT)
                 putExtra(AddAssignmentActivity.EXTRA_ID, classId)
+                putExtra(AddAssignmentActivity.EXTRA_ASSIGNMENT_ID, assignment.id)
+                putExtra(AddAssignmentActivity.EXTRA_TITLE, assignment.title)
+                putExtra(AddAssignmentActivity.EXTRA_DESCRIPTION, assignment.description)
             }
-            startActivity(intent)
+            editAssignmentResults.launch(intent)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -67,5 +78,13 @@ class SectionActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    private fun handleResultIntent(result: ActivityResult) {
+        if (result.resultCode == AddAssignmentActivity.RESULT_SUCCESS) {
+            result.data?.getStringExtra(AddAssignmentActivity.EXTRA_RESULT)?.let {
+                supportActionBar?.title = it
+            }
+        }
     }
 }
