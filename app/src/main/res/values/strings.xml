@@ -78,4 +78,5 @@
     <string name="edit">Edit</string>
     <string name="edit_kelas">Edit Kelas</string>
     <string name="edit_tugas">Edit Tugas</string>
+    <string name="edit_bagian">Edit Bagian</string>
 </resources>

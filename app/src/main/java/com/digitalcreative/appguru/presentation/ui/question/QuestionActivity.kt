@@ -88,10 +88,13 @@ class QuestionActivity : AppCompatActivity(), QuestionAdapter.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_edit_section) {
             val intent = Intent(this, AddSectionActivity::class.java).apply {
+                putExtra(AddSectionActivity.EXTRA_TYPE, AddSectionActivity.TYPE_EDIT)
                 putExtra(AddSectionActivity.EXTRA_CLASS_ID, classId)
                 putExtra(AddSectionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
+                putExtra(AddSectionActivity.EXTRA_SECTION_ID, section.id)
+                putExtra(AddSectionActivity.EXTRA_DATA, section.section)
             }
-            startActivity(intent)
+            addQuestionResults.launch(intent)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -106,13 +109,15 @@ class QuestionActivity : AppCompatActivity(), QuestionAdapter.OnClickListener {
             putExtra(AddQuestionActivity.EXTRA_CLASS_ID, classId)
             putExtra(AddQuestionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
             putExtra(AddQuestionActivity.EXTRA_SECTION_ID, section.id)
-
         }
         startActivity(intent)
     }
 
     private fun handleResultIntent(result: ActivityResult) {
         if (result.resultCode == AddQuestionActivity.RESULT_SUCCESS) {
+            result.data?.getStringExtra(AddSectionActivity.EXTRA_RESULT)?.let {
+                supportActionBar?.title = it
+            }
             viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
         }
     }

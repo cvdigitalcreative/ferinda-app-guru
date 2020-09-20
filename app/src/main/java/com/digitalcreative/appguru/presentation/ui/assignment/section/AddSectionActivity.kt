@@ -1,11 +1,11 @@
 package com.digitalcreative.appguru.presentation.ui.assignment.section
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.presentation.ui.question.QuestionActivity
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -21,6 +21,11 @@ class AddSectionActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_CLASS_ID = "extra_class_id"
         const val EXTRA_ASSIGNMENT_ID = "extra_assignment_id"
+        const val EXTRA_SECTION_ID = "extra_section_id"
+        const val EXTRA_TYPE = "extra_type"
+        const val EXTRA_DATA = "extra_data"
+        const val EXTRA_RESULT = "extra_result"
+        const val TYPE_EDIT = 1
         const val RESULT_SUCCESS = 1
     }
 
@@ -29,20 +34,33 @@ class AddSectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_section)
         setSupportActionBar(toolbar)
 
-        val classId = intent.getStringExtra(QuestionActivity.EXTRA_CLASS_ID) ?: return
-        val assignmentId = intent.getStringExtra(QuestionActivity.EXTRA_ASSIGNMENT_ID) ?: return
+        val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
+        val assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
+        val sectionId = intent.getStringExtra(EXTRA_SECTION_ID) ?: return
+        val type = intent.getIntExtra(EXTRA_TYPE, 0)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = getString(R.string.tambah_bagian)
+            title =
+                if (type == TYPE_EDIT) getString(R.string.edit_bagian) else getString(R.string.tambah_bagian)
         }
 
         initObservers()
 
+        if (type == TYPE_EDIT) {
+            intent.getStringExtra(EXTRA_DATA)?.let { edt_section.setText(it) }
+            btn_add.text = getString(R.string.edit)
+        }
+
         btn_add.setOnClickListener {
             val section = edt_section.text.toString().trim()
-            viewModel.addAssignmentSection(classId, assignmentId, section)
+
+            if (type == TYPE_EDIT) {
+                viewModel.editAssignmentSection(classId, assignmentId, sectionId, section)
+            } else {
+                viewModel.addAssignmentSection(classId, assignmentId, section)
+            }
         }
     }
 
@@ -71,7 +89,9 @@ class AddSectionActivity : AppCompatActivity() {
 
     private fun showSuccessMessage(message: String) {
         Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
-        setResult(RESULT_SUCCESS)
+        setResult(RESULT_SUCCESS, Intent().apply {
+            putExtra(EXTRA_RESULT, edt_section.text.toString().trim())
+        })
         finish()
     }
 

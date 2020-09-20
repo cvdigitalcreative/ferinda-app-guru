@@ -258,4 +258,22 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @POST("guru/{teacher_id}/kelas/{class_id}/tugas/{assignment_id}/grup-soal/{section_id}")
+    suspend fun editSection(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("assignment_id")
+        assignmentId: String,
+
+        @Path("section_id")
+        sectionId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }

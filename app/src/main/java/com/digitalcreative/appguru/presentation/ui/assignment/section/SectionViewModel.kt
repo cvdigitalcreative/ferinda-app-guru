@@ -9,6 +9,7 @@ import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.data.model.Student
 import com.digitalcreative.appguru.domain.usecase.assignment.GetAssignmentSubmitted
 import com.digitalcreative.appguru.domain.usecase.section.AddAssignmentSection
+import com.digitalcreative.appguru.domain.usecase.section.EditAssignmentSection
 import com.digitalcreative.appguru.domain.usecase.section.GetAssignmentSection
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class SectionViewModel @ViewModelInject constructor(
     private val getSectionUseCase: GetAssignmentSection,
     private val addSectionUseCase: AddAssignmentSection,
+    private val editSectionUseCase: EditAssignmentSection,
     private val getSubmittedUseCase: GetAssignmentSubmitted,
     private val preferences: UserPreferences
 ) : ViewModel() {
@@ -68,6 +70,36 @@ class SectionViewModel @ViewModelInject constructor(
 
             val teacherId = preferences.getString(UserPreferences.KEY_NIP)
             when (val response = addSectionUseCase(teacherId, classId, assignmentId, section)) {
+                is Result.Success -> {
+                    mSuccessMessage.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun editAssignmentSection(
+        classId: String,
+        assignmentId: String,
+        sectionId: String,
+        section: String
+    ) {
+        if (section.isBlank()) {
+            mErrorMessage.postValue(Constants.EMPTY_INPUT_ERROR)
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response =
+                editSectionUseCase(teacherId, classId, assignmentId, sectionId, section)) {
                 is Result.Success -> {
                     mSuccessMessage.postValue((response.data))
                     mLoading.postValue(false)

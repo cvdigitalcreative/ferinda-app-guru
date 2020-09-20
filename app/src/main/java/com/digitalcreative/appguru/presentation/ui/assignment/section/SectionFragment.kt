@@ -80,6 +80,7 @@ class SectionFragment : Fragment(), SectionAdapter.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        viewModel.getAssignmentSection(classId, assignment.id)
         fabMain.show()
     }
 
