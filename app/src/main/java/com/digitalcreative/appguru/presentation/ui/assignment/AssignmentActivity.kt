@@ -71,7 +71,9 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
         fab_murid.setOnClickListener {
             fab_menu.toggle(true)
 
-            val intent = Intent(this, AddStudentActivity::class.java)
+            val intent = Intent(this, AddStudentActivity::class.java).apply {
+                putExtra(AddStudentActivity.EXTRA_ID, classroom.id)
+            }
             startActivity(intent)
         }
 

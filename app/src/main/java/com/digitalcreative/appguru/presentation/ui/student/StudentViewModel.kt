@@ -47,7 +47,6 @@ class StudentViewModel @ViewModelInject constructor(
     init {
         getAllGender()
         getAllReligion()
-        getAllClassroom()
     }
 
     fun addStudent(formData: Map<String, String>) {
@@ -103,25 +102,6 @@ class StudentViewModel @ViewModelInject constructor(
             when (val response = getReligionUseCase()) {
                 is Result.Success -> {
                     mReligion.postValue((response.data))
-                    mLoading.postValue(false)
-                }
-
-                is Result.ErrorRequest -> {
-                    mErrorMessage.postValue(response.message)
-                    mLoading.postValue(false)
-                }
-            }
-        }
-    }
-
-    private fun getAllClassroom() {
-        viewModelScope.launch(Dispatchers.IO) {
-            mLoading.postValue(true)
-
-            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
-            when (val response = getClassroomUseCase(teacherId)) {
-                is Result.Success -> {
-                    mClassroom.postValue((response.data))
                     mLoading.postValue(false)
                 }
 

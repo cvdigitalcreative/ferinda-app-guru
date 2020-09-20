@@ -5,12 +5,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.digitalcreative.appguru.R
-import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.data.model.Gender
 import com.digitalcreative.appguru.data.model.Religion
 import com.digitalcreative.appguru.presentation.adapter.CustomDropdownAdapter
 import com.digitalcreative.appguru.presentation.ui.dialog.DatePickerDialog
-import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_CLASS
 import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_GENDER
 import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_RELIGION
 import com.digitalcreative.appguru.utils.helper.loadingDialog
@@ -27,9 +25,12 @@ class AddStudentActivity : AppCompatActivity() {
 
     private var genderId: String = ""
     private var religionId: String = ""
-    private var classId: String = ""
 
     private lateinit var datePicker: DatePickerDialog
+
+    companion object {
+        const val EXTRA_ID = "extra_id"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,16 +57,13 @@ class AddStudentActivity : AppCompatActivity() {
             religionId = (parent.adapter.getItem(position) as Religion).id
         }
 
-        dropdown_class.setOnItemClickListener { parent, _, position, _ ->
-            classId = (parent.adapter.getItem(position) as Classroom).id
-        }
-
         datePicker = DatePickerDialog {
             edt_birth_date.setText(it)
         }
 
         btn_register.setOnClickListener {
-            addStudent()
+            val classId = intent.getStringExtra(EXTRA_ID) ?: ""
+            addStudent(classId)
         }
 
         initObservers()
@@ -80,7 +78,6 @@ class AddStudentActivity : AppCompatActivity() {
         viewModel.loading.observe(this, Observer(this::showLoading))
         viewModel.gender.observe(this, Observer(this::showGender))
         viewModel.religion.observe(this, Observer(this::showReligion))
-        viewModel.classroom.observe(this, Observer(this::showClassroom))
         viewModel.successMessage.observe(this, Observer(this::showSuccessMessage))
         viewModel.errorMessage.observe(this, Observer(this::showErrorMessage))
     }
@@ -119,17 +116,6 @@ class AddStudentActivity : AppCompatActivity() {
         dropdown_religion.setAdapter(adapterReligion)
     }
 
-    private fun showClassroom(classrooms: List<Classroom>) {
-        val adapterClassroom =
-            CustomDropdownAdapter(
-                this,
-                R.layout.dropdown_menu_popup_item,
-                classrooms,
-                TYPE_DROPDOWN_CLASS
-            )
-        dropdown_class.setAdapter(adapterClassroom)
-    }
-
     private fun showSuccessMessage(message: String) {
         Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
         finish()
@@ -139,7 +125,7 @@ class AddStudentActivity : AppCompatActivity() {
         Toasty.error(this, message, Toasty.LENGTH_LONG, true).show()
     }
 
-    private fun addStudent() {
+    private fun addStudent(classId: String) {
         val nis = edt_nis.text.toString().trim()
         val email = edt_email.text.toString().trim()
         val name = edt_name.text.toString().trim()
@@ -149,7 +135,6 @@ class AddStudentActivity : AppCompatActivity() {
         val birthDate = edt_birth_date.text.toString().trim()
         val phone = edt_phone.text.toString().trim()
         val address = edt_address.text.toString().trim()
-        val classroom = classId
 
         val formData = mapOf(
             "nis" to nis,
@@ -161,7 +146,7 @@ class AddStudentActivity : AppCompatActivity() {
             "birthDate" to birthDate,
             "phone" to phone,
             "address" to address,
-            "classroom" to classroom
+            "classroom" to classId
         )
         viewModel.addStudent(formData)
     }
