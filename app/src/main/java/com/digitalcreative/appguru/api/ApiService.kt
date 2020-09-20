@@ -234,4 +234,13 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<String>
+
+    @GET("guru/{teacher_id}/kelas/{class_id}/murid/")
+    suspend fun getAllStudent(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String
+    ): BaseResponse<List<StudentFull>>
 }

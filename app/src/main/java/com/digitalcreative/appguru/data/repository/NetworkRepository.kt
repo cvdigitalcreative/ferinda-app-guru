@@ -461,7 +461,7 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
                 Result.ErrorRequest(response.message)
             }
         } catch (e: ConnectException) {
-            Log.e("NetworkRepository", "GetDetailReport  -> ${e.localizedMessage}")
+            Log.e("NetworkRepository", "GetDetailReport -> ${e.localizedMessage}")
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "GetDetailReport -> ${e.localizedMessage}")
@@ -541,6 +541,23 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(CONNECTION_ERROR)
         } catch (e: Exception) {
             Log.e("NetworkRepository", "EditClassName -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
+
+    suspend fun getAllStudent(teacherId: String, classId: String): Result<List<StudentFull>> {
+        return try {
+            val response = service.getAllStudent(teacherId, classId)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.data)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "GetAllStudent -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "GetAllStudent -> ${e.localizedMessage}")
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
