@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.domain.usecase.question.AddQuestion
+import com.digitalcreative.appguru.domain.usecase.question.EditQuestion
 import com.digitalcreative.appguru.domain.usecase.question.GetAssignmentQuestion
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class QuestionViewModel @ViewModelInject constructor(
     private val getQuestionUseCase: GetAssignmentQuestion,
     private val addQuestionUseCase: AddQuestion,
+    private val editQuestionUseCase: EditQuestion,
     private val preferences: UserPreferences
 ) : ViewModel() {
     private val mLoading = MutableLiveData<Boolean>()
@@ -76,6 +78,50 @@ class QuestionViewModel @ViewModelInject constructor(
                     sectionId,
                     question,
                     choicesValueFlatten
+                )) {
+                is Result.Success -> {
+                    mSuccessMessage.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun editQuestion(
+        classId: String,
+        assignmentId: String,
+        sectionId: String,
+        questionId: String,
+        question: String,
+        choicesValue: List<String>
+    ) {
+        if (question.isBlank() || choicesValue.any { it.isBlank() }) {
+            mErrorMessage.postValue(Constants.EMPTY_INPUT_ERROR)
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            val choicesValueFlatten = choicesValue.joinToString(prefix = "[", postfix = "]")
+            val formData = mapOf(
+                "soal" to question,
+                "bobot_pilihan" to choicesValueFlatten
+            )
+            when (val response =
+                editQuestionUseCase(
+                    teacherId,
+                    classId,
+                    assignmentId,
+                    sectionId,
+                    questionId,
+                    formData
                 )) {
                 is Result.Success -> {
                     mSuccessMessage.postValue((response.data))

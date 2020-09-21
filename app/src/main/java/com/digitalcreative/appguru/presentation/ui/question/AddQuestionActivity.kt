@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.digitalcreative.appguru.R
+import com.digitalcreative.appguru.data.model.Assignment
 import com.digitalcreative.appguru.utils.helper.loadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -18,9 +19,12 @@ class AddQuestionActivity : AppCompatActivity() {
     private val loadingDialog by loadingDialog()
 
     companion object {
+        const val EXTRA_TYPE = "extra_type"
         const val EXTRA_CLASS_ID = "extra_class_id"
         const val EXTRA_ASSIGNMENT_ID = "extra_assignment_id"
         const val EXTRA_SECTION_ID = "extra_section_id"
+        const val EXTRA_DATA = "extra_data"
+        const val TYPE_EDIT = 1
         const val RESULT_SUCCESS = 1
     }
 
@@ -32,11 +36,21 @@ class AddQuestionActivity : AppCompatActivity() {
         val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
         val assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
         val sectionId = intent.getStringExtra(EXTRA_SECTION_ID) ?: return
+        val type = intent.getIntExtra(EXTRA_TYPE, 0)
+        val data = intent.getParcelableExtra<Assignment.Section.Question>(EXTRA_DATA)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = getString(R.string.tambah_soal)
+            title =
+                if (type == TYPE_EDIT) getString(R.string.edit_soal) else getString(R.string.tambah_soal)
+        }
+
+        if (type == TYPE_EDIT && data != null) {
+            edt_question.setText(data.question)
+            edt_yes.setText(data.choices[0].value)
+            edt_no.setText(data.choices[1].value)
+            btn_add_question.text = getString(R.string.edit)
         }
 
         btn_add_question.setOnClickListener {
@@ -45,7 +59,19 @@ class AddQuestionActivity : AppCompatActivity() {
                 edt_yes.text.toString().trim(),
                 edt_no.text.toString().trim()
             )
-            viewModel.addQuestion(classId, assignmentId, sectionId, question, choicesValue)
+
+            if (type == TYPE_EDIT && data != null) {
+                viewModel.editQuestion(
+                    classId,
+                    assignmentId,
+                    sectionId,
+                    data.id,
+                    question,
+                    choicesValue
+                )
+            } else {
+                viewModel.addQuestion(classId, assignmentId, sectionId, question, choicesValue)
+            }
         }
 
         initObservers()

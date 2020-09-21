@@ -616,4 +616,35 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
+
+    suspend fun editQuestion(
+        teacherId: String,
+        classId: String,
+        assignmentId: String,
+        sectionId: String,
+        questionId: String,
+        formData: Map<String, String>
+    ): Result<String> {
+        return try {
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("soal", formData["soal"] ?: "")
+                .addFormDataPart("id_pilihan_jawaban", "[1, 2]")
+                .addFormDataPart("bobot_pilihan_jawaban", formData["bobot_pilihan"] ?: "")
+                .build()
+            val response =
+                service.editQuestion(teacherId, classId, assignmentId, sectionId, questionId, body)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.message)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "EditQuestion -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "EditQuestion -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
 }

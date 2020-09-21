@@ -106,18 +106,17 @@ class QuestionActivity : AppCompatActivity(), QuestionAdapter.OnClickListener {
 
     override fun onItemClicked(question: Assignment.Section.Question) {
         val intent = Intent(this, AddQuestionActivity::class.java).apply {
+            putExtra(AddQuestionActivity.EXTRA_TYPE, AddQuestionActivity.TYPE_EDIT)
             putExtra(AddQuestionActivity.EXTRA_CLASS_ID, classId)
             putExtra(AddQuestionActivity.EXTRA_ASSIGNMENT_ID, assignmentId)
             putExtra(AddQuestionActivity.EXTRA_SECTION_ID, section.id)
+            putExtra(AddQuestionActivity.EXTRA_DATA, question)
         }
-        startActivity(intent)
+        addQuestionResults.launch(intent)
     }
 
     private fun handleResultIntent(result: ActivityResult) {
         if (result.resultCode == AddQuestionActivity.RESULT_SUCCESS) {
-            result.data?.getStringExtra(AddSectionActivity.EXTRA_RESULT)?.let {
-                supportActionBar?.title = it
-            }
             viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
         }
     }
