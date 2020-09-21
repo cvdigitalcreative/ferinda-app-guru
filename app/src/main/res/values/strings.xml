@@ -82,4 +82,5 @@
     <string name="edit_soal">Edit Soal</string>
     <string name="daftar_murid">Daftar Murid</string>
     <string name="murid_pada_kelas_ini">Murid pada kelas ini</string>
+    <string name="edit_murid">Edit Murid</string>
 </resources>

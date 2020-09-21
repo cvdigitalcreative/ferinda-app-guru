@@ -33,7 +33,7 @@ class StudentActivity : AppCompatActivity(), StudentFullAdapter.OnClickListener 
     private lateinit var classId: String
 
     companion object {
-        const val EXTRA_ID = "extra_id"
+        const val EXTRA_CLASS_ID = "extra_class_id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class StudentActivity : AppCompatActivity(), StudentFullAdapter.OnClickListener 
         setContentView(R.layout.activity_student)
         setSupportActionBar(toolbar)
 
-        classId = intent.getStringExtra(EXTRA_ID) ?: return
+        classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
 
         initObservers()
 
@@ -61,7 +61,7 @@ class StudentActivity : AppCompatActivity(), StudentFullAdapter.OnClickListener 
 
         fab_student.setOnClickListener {
             val intent = Intent(this, AddStudentActivity::class.java).apply {
-                putExtra(AddStudentActivity.EXTRA_ID, classId)
+                putExtra(AddStudentActivity.EXTRA_CLASS_ID, classId)
             }
             activityResults.launch(intent)
         }
@@ -81,7 +81,12 @@ class StudentActivity : AppCompatActivity(), StudentFullAdapter.OnClickListener 
     }
 
     override fun onItemClicked(student: StudentFull) {
-
+        val intent = Intent(this, AddStudentActivity::class.java).apply {
+            putExtra(AddStudentActivity.EXTRA_TYPE, AddStudentActivity.TYPE_EDIT)
+            putExtra(AddStudentActivity.EXTRA_CLASS_ID, classId)
+            putExtra(AddStudentActivity.EXTRA_DATA, student)
+        }
+        activityResults.launch(intent)
     }
 
     private fun initObservers() {

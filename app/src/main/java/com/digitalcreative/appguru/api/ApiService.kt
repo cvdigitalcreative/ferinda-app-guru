@@ -297,4 +297,19 @@ interface ApiService {
         @Body
         body: RequestBody
     ): BaseResponse<Nothing>
+
+    @POST("guru/{teacher_id}/kelas/{class_id}/murid/{student_id}")
+    suspend fun editStudent(
+        @Path("teacher_id")
+        teacherId: String,
+
+        @Path("class_id")
+        classId: String,
+
+        @Path("student_id")
+        studentId: String,
+
+        @Body
+        body: RequestBody
+    ): BaseResponse<Nothing>
 }

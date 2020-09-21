@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.digitalcreative.appguru.R
 import com.digitalcreative.appguru.data.model.Gender
 import com.digitalcreative.appguru.data.model.Religion
+import com.digitalcreative.appguru.data.model.StudentFull
 import com.digitalcreative.appguru.presentation.adapter.CustomDropdownAdapter
 import com.digitalcreative.appguru.presentation.ui.dialog.DatePickerDialog
 import com.digitalcreative.appguru.utils.helper.Constants.TYPE_DROPDOWN_GENDER
@@ -26,10 +27,15 @@ class AddStudentActivity : AppCompatActivity() {
     private var genderId: String = ""
     private var religionId: String = ""
 
+    private lateinit var genders: List<Gender>
+    private lateinit var religions: List<Religion>
     private lateinit var datePicker: DatePickerDialog
 
     companion object {
-        const val EXTRA_ID = "extra_id"
+        const val EXTRA_TYPE = "extra_type"
+        const val EXTRA_CLASS_ID = "extra_class_id"
+        const val EXTRA_DATA = "extra_data"
+        const val TYPE_EDIT = 1
         const val RESULT_SUCCESS = 1
     }
 
@@ -38,10 +44,32 @@ class AddStudentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_student)
         setSupportActionBar(toolbar)
 
+        val type = intent.getIntExtra(EXTRA_TYPE, 0)
+        val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
+        val student = intent.getParcelableExtra<StudentFull>(EXTRA_DATA)
+
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-            title = getString(R.string.tambah_murid)
+            title =
+                if (type == TYPE_EDIT) getString(R.string.edit_murid) else getString(R.string.tambah_murid)
+        }
+
+        if (type == TYPE_EDIT) {
+            edt_nis.isEnabled = false
+            btn_register.text = getString(R.string.edit)
+        }
+
+        student?.let {
+            edt_nis.setText(it.id)
+            edt_email.setText(it.email)
+            edt_name.setText(it.name)
+            dropdown_gender.setText(it.gender)
+            dropdown_religion.setText(it.religion)
+            edt_birth_place.setText(it.birthplace)
+            edt_birth_date.setText(it.birthday.replace("00:00:00", "").trim())
+            edt_phone.setText(it.phone)
+            edt_address.setText(it.address)
         }
 
         edt_birth_date.setOnClickListener {
@@ -63,8 +91,16 @@ class AddStudentActivity : AppCompatActivity() {
         }
 
         btn_register.setOnClickListener {
-            val classId = intent.getStringExtra(EXTRA_ID) ?: ""
-            addStudent(classId)
+            if (type == TYPE_EDIT) {
+                genderId =
+                    genders.find { it.name == dropdown_gender.text.toString() }?.id.toString()
+                religionId =
+                    religions.find { it.name == dropdown_religion.text.toString() }?.id.toString()
+
+                editStudent(classId)
+            } else {
+                addStudent(classId)
+            }
         }
 
         initObservers()
@@ -96,6 +132,8 @@ class AddStudentActivity : AppCompatActivity() {
     }
 
     private fun showGender(genders: List<Gender>) {
+        this.genders = genders
+
         val adapterGender =
             CustomDropdownAdapter(
                 this,
@@ -107,6 +145,8 @@ class AddStudentActivity : AppCompatActivity() {
     }
 
     private fun showReligion(religions: List<Religion>) {
+        this.religions = religions
+
         val adapterReligion =
             CustomDropdownAdapter(
                 this,
@@ -151,5 +191,29 @@ class AddStudentActivity : AppCompatActivity() {
             "classroom" to classId
         )
         viewModel.addStudent(formData)
+    }
+
+    private fun editStudent(classId: String) {
+        val nis = edt_nis.text.toString().trim()
+        val email = edt_email.text.toString().trim()
+        val name = edt_name.text.toString().trim()
+        val gender = genderId
+        val religion = religionId
+        val birthPlace = edt_birth_place.text.toString().trim()
+        val birthDate = edt_birth_date.text.toString().trim()
+        val phone = edt_phone.text.toString().trim()
+        val address = edt_address.text.toString().trim()
+
+        val formData = mapOf(
+            "email" to email,
+            "name" to name,
+            "gender" to gender,
+            "religion" to religion,
+            "birthPlace" to birthPlace,
+            "birthDate" to birthDate,
+            "phone" to phone,
+            "address" to address
+        )
+        viewModel.editStudent(classId, nis, formData)
     }
 }

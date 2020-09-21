@@ -647,4 +647,37 @@ class NetworkRepository @Inject constructor(private val service: ApiService) {
             Result.ErrorRequest(UNKNOWN_ERROR)
         }
     }
+
+    suspend fun editStudent(
+        teacherId: String,
+        classId: String,
+        studentId: String,
+        formData: Map<String, String>
+    ): Result<String> {
+        return try {
+            val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("email", formData["email"] ?: "")
+                .addFormDataPart("nama", formData["name"] ?: "")
+                .addFormDataPart("id_jenis_kelamin", formData["gender"] ?: "")
+                .addFormDataPart("id_agama", formData["religion"] ?: "")
+                .addFormDataPart("tempat_lahir", formData["birthPlace"] ?: "")
+                .addFormDataPart("tanggal_lahir", formData["birthDate"] ?: "")
+                .addFormDataPart("telepon", formData["phone"] ?: "")
+                .addFormDataPart("alamat", formData["address"] ?: "")
+                .build()
+            val response = service.editStudent(teacherId, classId, studentId, body)
+            if (response.status == STATUS_SUCCESS) {
+                Result.Success(response.message)
+            } else {
+                Result.ErrorRequest(response.message)
+            }
+        } catch (e: ConnectException) {
+            Log.e("NetworkRepository", "EditStudent -> ${e.localizedMessage}")
+            Result.ErrorRequest(CONNECTION_ERROR)
+        } catch (e: Exception) {
+            Log.e("NetworkRepository", "EditStudent -> ${e.localizedMessage}")
+            Result.ErrorRequest(UNKNOWN_ERROR)
+        }
+    }
 }

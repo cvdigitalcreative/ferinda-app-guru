@@ -72,7 +72,7 @@ class AssignmentActivity : AppCompatActivity(), AssignmentAdapter.ClickListener 
             fab_menu.toggle(true)
 
             val intent = Intent(this, StudentActivity::class.java).apply {
-                putExtra(StudentActivity.EXTRA_ID, classroom.id)
+                putExtra(StudentActivity.EXTRA_CLASS_ID, classroom.id)
             }
             startActivity(intent)
         }
