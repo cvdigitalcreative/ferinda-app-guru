@@ -36,7 +36,7 @@ class AddSectionActivity : AppCompatActivity() {
 
         val classId = intent.getStringExtra(EXTRA_CLASS_ID) ?: return
         val assignmentId = intent.getStringExtra(EXTRA_ASSIGNMENT_ID) ?: return
-        val sectionId = intent.getStringExtra(EXTRA_SECTION_ID) ?: return
+        val sectionId = intent.getStringExtra(EXTRA_SECTION_ID)
         val type = intent.getIntExtra(EXTRA_TYPE, 0)
 
         supportActionBar?.apply {
@@ -56,7 +56,7 @@ class AddSectionActivity : AppCompatActivity() {
         btn_add.setOnClickListener {
             val section = edt_section.text.toString().trim()
 
-            if (type == TYPE_EDIT) {
+            if (type == TYPE_EDIT && sectionId != null) {
                 viewModel.editAssignmentSection(classId, assignmentId, sectionId, section)
             } else {
                 viewModel.addAssignmentSection(classId, assignmentId, section)

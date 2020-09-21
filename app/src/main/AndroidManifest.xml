@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+        <activity android:name=".presentation.ui.student.StudentActivity"></activity>
         <activity android:name=".presentation.ui.answer.AnswerActivity" />
         <activity android:name=".presentation.ui.assignment.section.SubmittedActivity" />
         <activity android:name=".presentation.ui.assignment.detail.DetailAssignmentActivity" />

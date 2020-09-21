@@ -80,4 +80,6 @@
     <string name="edit_tugas">Edit Tugas</string>
     <string name="edit_bagian">Edit Bagian</string>
     <string name="edit_soal">Edit Soal</string>
+    <string name="daftar_murid">Daftar Murid</string>
+    <string name="murid_pada_kelas_ini">Murid pada kelas ini</string>
 </resources>

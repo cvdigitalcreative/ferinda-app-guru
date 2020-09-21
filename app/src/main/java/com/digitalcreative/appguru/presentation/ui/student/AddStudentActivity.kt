@@ -30,6 +30,7 @@ class AddStudentActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ID = "extra_id"
+        const val RESULT_SUCCESS = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,6 +119,7 @@ class AddStudentActivity : AppCompatActivity() {
 
     private fun showSuccessMessage(message: String) {
         Toasty.success(this, message, Toasty.LENGTH_LONG, true).show()
+        setResult(RESULT_SUCCESS)
         finish()
     }
 

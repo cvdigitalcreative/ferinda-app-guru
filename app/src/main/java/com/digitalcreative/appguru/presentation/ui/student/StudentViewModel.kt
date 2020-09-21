@@ -8,10 +8,11 @@ import com.digitalcreative.appguru.data.Result
 import com.digitalcreative.appguru.data.model.Classroom
 import com.digitalcreative.appguru.data.model.Gender
 import com.digitalcreative.appguru.data.model.Religion
-import com.digitalcreative.appguru.domain.usecase.classroom.GetAllClassroom
+import com.digitalcreative.appguru.data.model.StudentFull
 import com.digitalcreative.appguru.domain.usecase.common.GetAllGender
 import com.digitalcreative.appguru.domain.usecase.common.GetAllReligion
 import com.digitalcreative.appguru.domain.usecase.student.AddStudent
+import com.digitalcreative.appguru.domain.usecase.student.GetAllStudent
 import com.digitalcreative.appguru.utils.helper.Constants
 import com.digitalcreative.appguru.utils.preferences.UserPreferences
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 class StudentViewModel @ViewModelInject constructor(
     private val getGenderUseCase: GetAllGender,
     private val getReligionUseCase: GetAllReligion,
-    private val getClassroomUseCase: GetAllClassroom,
+    private val getStudentUseCase: GetAllStudent,
     private val addStudentUseCase: AddStudent,
     private val preferences: UserPreferences
 ) : ViewModel() {
@@ -37,6 +38,9 @@ class StudentViewModel @ViewModelInject constructor(
 
     private val mClassroom = MutableLiveData<List<Classroom>>()
     val classroom = mClassroom
+
+    private val mStudent = MutableLiveData<List<StudentFull>>()
+    val student = mStudent
 
     private val mSuccessMessage = MutableLiveData<String>()
     val successMessage = mSuccessMessage
@@ -62,6 +66,25 @@ class StudentViewModel @ViewModelInject constructor(
             when (val response = addStudentUseCase(teacherId, formData)) {
                 is Result.Success -> {
                     mSuccessMessage.postValue((response.data))
+                    mLoading.postValue(false)
+                }
+
+                is Result.ErrorRequest -> {
+                    mErrorMessage.postValue(response.message)
+                    mLoading.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun getAllStudent(classId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.postValue(true)
+
+            val teacherId = preferences.getString(UserPreferences.KEY_NIP)
+            when (val response = getStudentUseCase(teacherId, classId)) {
+                is Result.Success -> {
+                    mStudent.postValue((response.data))
                     mLoading.postValue(false)
                 }
 

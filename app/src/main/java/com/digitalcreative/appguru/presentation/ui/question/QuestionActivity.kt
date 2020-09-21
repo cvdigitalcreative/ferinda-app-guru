@@ -117,6 +117,9 @@ class QuestionActivity : AppCompatActivity(), QuestionAdapter.OnClickListener {
 
     private fun handleResultIntent(result: ActivityResult) {
         if (result.resultCode == AddQuestionActivity.RESULT_SUCCESS) {
+            result.data?.getStringExtra(AddSectionActivity.EXTRA_RESULT)?.let {
+                supportActionBar?.title = it
+            }
             viewModel.getAssignmentQuestion(classId, assignmentId, section.id)
         }
     }
